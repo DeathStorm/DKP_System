@@ -147,8 +147,8 @@
             this.cbContent.Location = new System.Drawing.Point(62, 89);
             this.cbContent.Name = "cbContent";
             this.cbContent.Size = new System.Drawing.Size(260, 21);
+            this.cbContent.Sorted = true;
             this.cbContent.TabIndex = 15;
-            this.cbContent.Text = "T1";
             // 
             // frmRaid
             // 
@@ -170,6 +170,7 @@
             this.Name = "frmRaid";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Raider";
+            this.Load += new System.EventHandler(this.frmRaid_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

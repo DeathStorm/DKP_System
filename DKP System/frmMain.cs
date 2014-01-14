@@ -21,6 +21,8 @@ namespace DKP_System
         const string sqlPassword = "test";
         MySqlConnection sqlConnection;
 
+        Dictionary<int, string> Content;
+
         public frmMain()
         {
             InitializeComponent();
@@ -28,8 +30,45 @@ namespace DKP_System
 
         private void btnRefreshAll_Click(object sender, EventArgs e)
         {
+            RefreshContent();
             RefreshRaider();
             RefreshRaids();
+
+        }
+
+        private void RefreshContent()
+        {
+            try
+            {
+                MySqlCommand sqlCmd = new MySqlCommand("Select * from Content", sqlConnection);
+                sqlConnection.Open();
+                MySqlDataReader sqlRead = sqlCmd.ExecuteReader();
+
+                Content.Clear();
+                dgContent.Rows.Clear();
+
+                if (sqlRead.HasRows)
+                {
+                    while (sqlRead.Read())
+                    {
+                        Content.Add(sqlRead.GetInt32("ID"), sqlRead.GetString("Name"));
+
+                        DataGridViewRow row = dgContent.Rows[dgContent.Rows.Add()];
+                        row.Cells[dgContentID.Name].Value = sqlRead.GetString("ID");
+                        row.Cells[dgContentName.Name].Value = sqlRead.GetString("Name");
+                    }
+
+                }
+                sqlRead.Close();
+                sqlConnection.Close();
+                AddMessage("Content erfolgreich aktualisiert");
+            }
+            catch (MySqlException e)
+            {
+                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                if (sqlConnection.State != System.Data.ConnectionState.Closed) sqlConnection.Close();
+                AddMessage("Contentaktualisierung fehlgeschlagen", true);
+            }
 
         }
 
@@ -37,11 +76,33 @@ namespace DKP_System
         {
             try
             {
+
                 MySqlCommand sqlCmd = new MySqlCommand("Select * from Raider", sqlConnection);
                 sqlConnection.Open();
                 MySqlDataReader sqlRead = sqlCmd.ExecuteReader();
 
+                MySqlConnection sqlSubConnection = new MySqlConnection(sqlConnection.ConnectionString + ";Password=" + sqlPassword);
+                sqlSubConnection.Open();
+                MySqlCommand sqlSubCommand;
+                MySqlDataReader sqlSubReader;
+
                 dgRaider.Rows.Clear();
+                dgRaider.Columns.Clear();
+                DataGridViewColumn col = dgRaider.Columns[dgRaider.Columns.Add("dgRaiderID", "ID")];
+                col.ReadOnly = true;
+                col.Width = 20;
+
+                col = dgRaider.Columns[dgRaider.Columns.Add("dgRaiderName", "Raider")];
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                col.ReadOnly = true;
+
+
+                foreach (KeyValuePair<int, string> content in Content)
+                {
+                    col = dgRaider.Columns[dgRaider.Columns.Add("dgRaider" + content.Value, content.Value)];
+                    col.Width = 75;
+                    col.ReadOnly = true;
+                }
 
                 if (sqlRead.HasRows)
                 {
@@ -50,13 +111,28 @@ namespace DKP_System
                         DataGridViewRow row = dgRaider.Rows[dgRaider.Rows.Add()];
                         row.Cells[dgRaiderID.Name].Value = sqlRead.GetString("ID");
                         row.Cells[dgRaiderName.Name].Value = sqlRead.GetString("Name");
-                        row.Cells[dgRaiderDKP_T1.Name].Value = sqlRead.GetString("DKP_T1");
-                        row.Cells[dgRaiderDKP_T2.Name].Value = sqlRead.GetString("DKP_T2");
+
+                        sqlSubCommand = new MySqlCommand("SELECT * FROM DKP_Points WHERE RaiderID = " + sqlRead.GetString("ID"),sqlSubConnection);
+                        Console.WriteLine(sqlSubCommand.CommandText);
+                        sqlSubReader = sqlSubCommand.ExecuteReader();
+                        if (sqlSubReader.HasRows)
+                        {
+                            while (sqlSubReader.Read())
+                            {
+                                string cellName = "dgRaider" + Content[sqlSubReader.GetInt32("ContentID")];
+                                if (row.Cells[cellName] != null)
+                                {
+                                    row.Cells[cellName].Value = sqlSubReader.GetString("DKPPoints");
+                                }
+                            }
+                        }
+                        sqlSubReader.Close();
                     }
 
                 }
                 sqlRead.Close();
                 sqlConnection.Close();
+                sqlSubConnection.Close();
                 AddMessage("Raider erfolgreich aktualisiert");
             }
             catch (MySqlException e)
@@ -86,7 +162,12 @@ namespace DKP_System
                         row.Cells[dgRaidsID.Name].Value = sqlRead.GetString("ID");
                         row.Cells[dgRaidsName.Name].Value = sqlRead.GetString("Name");
                         row.Cells[dgRaidsShortcut.Name].Value = sqlRead.GetString("Shortcut");
-                        row.Cells[dgRaidsContent.Name].Value = sqlRead.GetString("Content");
+                        if (Content.ContainsKey(sqlRead.GetInt32("Content")))
+                        { row.Cells[dgRaidsContent.Name].Value = Content[sqlRead.GetInt32("Content")]; }//sqlRead.GetString("Content"); }
+                        else
+                        { row.Cells[dgRaidsContent.Name].Value = sqlRead.GetString("Content"); }
+                        
+                        
                         row.Cells[dgRaidsCommentary.Name].Value = sqlRead.GetString("Commentary");
                     }
 
@@ -106,13 +187,9 @@ namespace DKP_System
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            Content = new Dictionary<int, string>();
             sqlConnection = new MySqlConnection("Data Source=" + sqlDatasource + "; Database=" + sqlDatabase + "; User ID=" + sqlLogin + ";Password=" + sqlPassword);
             AddMessage("Connection aufgebaut");
-        }
-
-        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
         }
 
         private void AddMessage(string message) { AddMessage(message, false); }
@@ -134,10 +211,6 @@ namespace DKP_System
 
         }
 
-        private void btnAddRaider_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void SQLSaveRaider(frmRaider raider)
         {
@@ -191,9 +264,60 @@ namespace DKP_System
             }
         }
 
-        private void btnAddRaid_Click(object sender, EventArgs e)
-        {
 
+        private void SQLSaveContent(frmContent content)
+        {
+            if (content.tbName.Text == "")
+            {
+                AddMessage("Content nicht gespeichert --> Kein Name", true);
+            }
+            else
+            {
+                MySqlCommand sqlCmd;
+                string cmdString = "";
+                sqlConnection.Open();
+                string messageSuccess = "";
+                
+                try
+                {
+                    if (content.tbID.Text == "")
+                    {
+                        cmdString =
+                            "INSERT INTO Content VALUES(0, " +
+                            "'" + content.tbName.Text + "');";
+                        messageSuccess = "Content erfolgreich erstellt";
+                    }
+                    else
+                    {
+                        cmdString =
+                            "UPDATE Content SET " +
+                            "Name = '" + content.tbName.Text + "' "+
+                            "WHERE ID = "+content.tbID.Text+";";
+                        messageSuccess = "Content erfolgreich upgedatet";
+                    }
+                    Console.WriteLine(cmdString);
+                    sqlCmd = new MySqlCommand(cmdString, sqlConnection);
+                    sqlCmd.ExecuteNonQuery();
+                    sqlConnection.Close();
+                    AddMessage(messageSuccess);
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    if (sqlConnection.State != System.Data.ConnectionState.Closed) sqlConnection.Close();
+                    AddMessage("Content nicht gespeichert --> SQL Fehler", true);
+                }
+                RefreshContent();
+            }
+        }
+
+        private int? GetKeyOfValue(Dictionary<int,String> dic,String value)
+        {
+            foreach (KeyValuePair<int,string> pair in dic)
+            {
+                if (pair.Value == value) return pair.Key;
+            }
+            return null;
         }
 
         private void SQLSaveRaid(frmRaid raid)
@@ -201,6 +325,7 @@ namespace DKP_System
             if (raid.tbName.Text == "") { AddMessage("Raid nicht gespeichert --> Kein Name", true); }
             else if (raid.tbShortcut.Text == "") { AddMessage("Raid nicht gespeichert --> Kein Shortcut", true); }
             else if (raid.cbContent.Text == "") { AddMessage("Raid nicht gespeichert --> Kein Content", true); }
+            else if (!Content.ContainsValue(raid.cbContent.Text)) { AddMessage("Raid nicht gespeichert --> Kein valider Content",true); }
             else
             {
                 MySqlCommand sqlCmd;
@@ -216,7 +341,7 @@ namespace DKP_System
                             "INSERT INTO Raids VALUES(0, " +
                             "'" + raid.tbName.Text + "', " +
                             "'" + raid.tbShortcut.Text + "', " +
-                            "'" + raid.cbContent.Text + "', " +
+                            "'" + GetKeyOfValue(Content,raid.cbContent.Text)+ "', " +
                             "'" + raid.tbCommentary.Text + "');";
                         messageSuccess = "Raid erfolgreich erstellt";
                     }
@@ -226,7 +351,7 @@ namespace DKP_System
                             "UPDATE Raids SET " +
                             "Name = '" + raid.tbName.Text + "', " +
                             "Shortcut = '" + raid.tbShortcut.Text + "', " +
-                            "Content = '" + raid.cbContent.Text + "', " +
+                            "Content = '" + GetKeyOfValue(Content, raid.cbContent.Text) + "', " +
                             "Commentary = '" + raid.tbCommentary.Text + "' " +
                             "WHERE id = " + raid.tbID.Text + ";";
                         messageSuccess = "Raid erfolgreich upgedatet";
@@ -251,7 +376,7 @@ namespace DKP_System
         {
             if (e.RowIndex >= 0)
             {
-                frmRaid raid = new frmRaid();
+                frmRaid raid = new frmRaid(Content);
                 DataGridViewRow row = dgRaids.Rows[e.RowIndex];
                 raid.tbID.Text = row.Cells[dgRaidsID.Name].Value.ToString();
                 raid.tbName.Text = row.Cells[dgRaidsName.Name].Value.ToString();
@@ -268,7 +393,7 @@ namespace DKP_System
 
         private void miAddRaid_Click(object sender, EventArgs e)
         {
-            frmRaid raid = new frmRaid();
+            frmRaid raid = new frmRaid(Content);
 
             if (raid.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
             {
@@ -383,11 +508,84 @@ namespace DKP_System
                 DataGridViewRow row = dgRaider.Rows[e.RowIndex];
                 raider.tbID.Text = row.Cells[dgRaiderID.Name].Value.ToString();
                 raider.tbName.Text = row.Cells[dgRaiderName.Name].Value.ToString();
-                raider.tbDKP_T1.Text = row.Cells[dgRaiderDKP_T1.Name].Value.ToString();
-                raider.tbDKP_T2.Text = row.Cells[dgRaiderDKP_T2.Name].Value.ToString();
+                //raider.tbDKP_T1.Text = row.Cells[dgRaiderDKP_T1.Name].Value.ToString();
+                //raider.tbDKP_T2.Text = row.Cells[dgRaiderDKP_T2.Name].Value.ToString();
                 if (raider.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                 {
                     SQLSaveRaider(raider);
+
+                }
+            }
+        }
+
+        private void miAddContent_Click(object sender, EventArgs e)
+        {
+            frmContent content = new frmContent();
+
+            if (content.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            {
+                SQLSaveContent(content);
+
+            }
+        }
+
+        private void miDeleteContent_Click(object sender, EventArgs e)
+        {
+            int? currentRow = null;
+            foreach (DataGridViewCell cell in dgContent.SelectedCells)
+            {
+                if (currentRow == null) { currentRow = cell.RowIndex; }
+                else if (currentRow != cell.RowIndex)
+                {
+                    AddMessage("Löschung abgebrochen --> Es kann nur eine Zeile auf einmal gelöscht werden.", true);
+                    return;
+                }
+            }
+            if (currentRow != null)
+            {
+                DataGridViewRow row = dgContent.Rows[(int)currentRow];
+
+                MySqlCommand sqlCmd;
+                string cmdString = "";
+                sqlConnection.Open();
+                string messageSuccess = "";
+                try
+                {
+                    cmdString =
+                             "DELETE FROM Content WHERE " +
+                             "ID = " + row.Cells[dgContentID.Name].Value.ToString();
+                    messageSuccess = "Content erfolgreich gelöscht";
+
+                    Console.WriteLine(cmdString);
+                    sqlCmd = new MySqlCommand(cmdString, sqlConnection);
+                    sqlCmd.ExecuteNonQuery();
+                    sqlConnection.Close();
+                    AddMessage(messageSuccess);
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    if (sqlConnection.State != System.Data.ConnectionState.Closed) sqlConnection.Close();
+                    AddMessage("Content nicht gelöscht --> SQL Fehler", true);
+                }
+                RefreshContent();
+            }
+        }
+
+        private void dgContent_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if (e.RowIndex >= 0)
+            {
+                frmContent content = new frmContent();
+                DataGridViewRow row = dgContent.Rows[e.RowIndex];
+                content.tbID.Text = row.Cells[dgContentID.Name].Value.ToString();
+                content.tbName.Text = row.Cells[dgContentName.Name].Value.ToString();
+                //raider.tbDKP_T1.Text = row.Cells[dgRaiderDKP_T1.Name].Value.ToString();
+                //raider.tbDKP_T2.Text = row.Cells[dgRaiderDKP_T2.Name].Value.ToString();
+                if (content.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                {
+                    SQLSaveContent(content);
 
                 }
             }

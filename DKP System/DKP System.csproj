@@ -47,6 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Content.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Content.Designer.cs">
+      <DependentUpon>Content.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +73,9 @@
     <Compile Include="Raider.Designer.cs">
       <DependentUpon>Raider.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Content.resx">
+      <DependentUpon>Content.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>

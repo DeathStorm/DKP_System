@@ -63,7 +63,7 @@ namespace DKP_System
             {
                 MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 if (sqlConnection.State != System.Data.ConnectionState.Closed) sqlConnection.Close();
-                AddMessage("Raideraktualisierung fehlgeschlagen",true);
+                AddMessage("Raideraktualisierung fehlgeschlagen", true);
             }
 
         }
@@ -100,7 +100,7 @@ namespace DKP_System
             {
                 MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 if (sqlConnection.State != System.Data.ConnectionState.Closed) sqlConnection.Close();
-                AddMessage("Raidaktualisierung fehlgeschlagen",true);
+                AddMessage("Raidaktualisierung fehlgeschlagen", true);
             }
         }
 
@@ -117,7 +117,7 @@ namespace DKP_System
 
         private void AddMessage(string message) { AddMessage(message, false); }
 
-        private void AddMessage(string message,Boolean isError)
+        private void AddMessage(string message, Boolean isError)
         {
             const int messageCount = 10;
             message = DateTime.Now.ToString() + " - " + message;
@@ -130,26 +130,20 @@ namespace DKP_System
             { entry.BackColor = Color.IndianRed; }
             else
             { entry.BackColor = Color.LightGreen; }
-            
+
 
         }
 
         private void btnAddRaider_Click(object sender, EventArgs e)
         {
-            frmRaider raider = new frmRaider();
 
-            if (raider.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
-            {
-                SQLSaveRaider(raider);
-
-            }
         }
 
         private void SQLSaveRaider(frmRaider raider)
-        {            
+        {
             if (raider.tbName.Text == "")
             {
-                AddMessage("Raider nicht gespeichert --> Kein Name",true);
+                AddMessage("Raider nicht gespeichert --> Kein Name", true);
             }
             else
             {
@@ -178,7 +172,7 @@ namespace DKP_System
                             "Name = '" + raider.tbName.Text + "', " +
                             "DKP_T1 = " + raider.tbDKP_T1.Text + ", " +
                             "DKP_T2 = " + raider.tbDKP_T2.Text + " " +
-                            "WHERE id = "+raider.tbID.Text+";";
+                            "WHERE id = " + raider.tbID.Text + ";";
                         messageSuccess = "Raider erfolgreich upgedatet";
                     }
                     Console.WriteLine(cmdString);
@@ -191,41 +185,20 @@ namespace DKP_System
                 {
                     MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     if (sqlConnection.State != System.Data.ConnectionState.Closed) sqlConnection.Close();
-                    AddMessage("Raider nicht gespeicher --> SQL Fehler",true);
+                    AddMessage("Raider nicht gespeichert --> SQL Fehler", true);
                 }
                 RefreshRaider();
             }
         }
 
-        private void dgRaider_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            frmRaider raider = new frmRaider();
-            DataGridViewRow row = dgRaider.Rows[e.RowIndex];
-            raider.tbID.Text = row.Cells[dgRaiderID.Name].Value.ToString();
-            raider.tbName.Text = row.Cells[dgRaiderName.Name].Value.ToString();
-            raider.tbDKP_T1.Text = row.Cells[dgRaiderDKP_T1.Name].Value.ToString();
-            raider.tbDKP_T2.Text = row.Cells[dgRaiderDKP_T2.Name].Value.ToString();
-            if (raider.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
-            {
-                SQLSaveRaider(raider);
-
-            }
-        }
-
         private void btnAddRaid_Click(object sender, EventArgs e)
         {
-            frmRaid raid = new frmRaid();
 
-            if (raid.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
-            {
-                SQLSaveRaid(raid);
-
-            }
         }
 
         private void SQLSaveRaid(frmRaid raid)
         {
-            if (raid.tbName.Text == ""){AddMessage("Raid nicht gespeichert --> Kein Name", true);}
+            if (raid.tbName.Text == "") { AddMessage("Raid nicht gespeichert --> Kein Name", true); }
             else if (raid.tbShortcut.Text == "") { AddMessage("Raid nicht gespeichert --> Kein Shortcut", true); }
             else if (raid.cbContent.Text == "") { AddMessage("Raid nicht gespeichert --> Kein Content", true); }
             else
@@ -234,7 +207,7 @@ namespace DKP_System
                 string cmdString = "";
                 sqlConnection.Open();
                 string messageSuccess = "";
-                
+
                 try
                 {
                     if (raid.tbID.Text == "")
@@ -268,7 +241,7 @@ namespace DKP_System
                 {
                     MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     if (sqlConnection.State != System.Data.ConnectionState.Closed) sqlConnection.Close();
-                    AddMessage("Raid nicht gespeicher --> SQL Fehler", true);
+                    AddMessage("Raid nicht gespeichert --> SQL Fehler", true);
                 }
                 RefreshRaids();
             }
@@ -276,17 +249,147 @@ namespace DKP_System
 
         private void dgRaids_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex >= 0)
+            {
+                frmRaid raid = new frmRaid();
+                DataGridViewRow row = dgRaids.Rows[e.RowIndex];
+                raid.tbID.Text = row.Cells[dgRaidsID.Name].Value.ToString();
+                raid.tbName.Text = row.Cells[dgRaidsName.Name].Value.ToString();
+                raid.tbShortcut.Text = row.Cells[dgRaidsShortcut.Name].Value.ToString();
+                raid.cbContent.Text = row.Cells[dgRaidsContent.Name].Value.ToString();
+                raid.tbCommentary.Text = row.Cells[dgRaidsCommentary.Name].Value.ToString();
+                if (raid.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                {
+                    SQLSaveRaid(raid);
+
+                }
+            }
+        }
+
+        private void miAddRaid_Click(object sender, EventArgs e)
+        {
             frmRaid raid = new frmRaid();
-            DataGridViewRow row = dgRaids.Rows[e.RowIndex];
-            raid.tbID.Text = row.Cells[dgRaidsID.Name].Value.ToString();
-            raid.tbName.Text = row.Cells[dgRaidsName.Name].Value.ToString();
-            raid.tbShortcut.Text = row.Cells[dgRaidsShortcut.Name].Value.ToString();
-            raid.cbContent.Text = row.Cells[dgRaidsContent.Name].Value.ToString();
-            raid.tbCommentary.Text = row.Cells[dgRaidsCommentary.Name].Value.ToString();
+
             if (raid.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
             {
                 SQLSaveRaid(raid);
 
+            }
+        }
+
+        private void miDeleteRaid_Click(object sender, EventArgs e)
+        {
+            int? currentRow = null;
+            foreach (DataGridViewCell cell in dgRaids.SelectedCells)
+            {
+                if (currentRow == null) { currentRow = cell.RowIndex; }
+                else if (currentRow != cell.RowIndex)
+                {
+                    AddMessage("Löschung abgebrochen --> Es kann nur eine Zeile auf einmal gelöscht werden.", true);
+                    return;
+                }
+            }
+            if (currentRow != null)
+            {
+                DataGridViewRow row = dgRaids.Rows[(int)currentRow];
+
+                MySqlCommand sqlCmd;
+                string cmdString = "";
+                sqlConnection.Open();
+                string messageSuccess = "";
+                try
+                {
+                    cmdString =
+                             "DELETE FROM Raids WHERE " +
+                             "ID = " + row.Cells[dgRaidsID.Name].Value.ToString();
+                    messageSuccess = "Raid erfolgreich gelöscht";
+
+                    Console.WriteLine(cmdString);
+                    sqlCmd = new MySqlCommand(cmdString, sqlConnection);
+                    sqlCmd.ExecuteNonQuery();
+                    sqlConnection.Close();
+                    AddMessage(messageSuccess);
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    if (sqlConnection.State != System.Data.ConnectionState.Closed) sqlConnection.Close();
+                    AddMessage("Raid nicht gelöscht --> SQL Fehler", true);
+                }
+                RefreshRaids();
+            }
+
+        }
+
+        private void miAddRaider_Click(object sender, EventArgs e)
+        {
+            frmRaider raider = new frmRaider();
+
+            if (raider.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            {
+                SQLSaveRaider(raider);
+
+            }
+        }
+
+        private void miDeleteRaider_Click(object sender, EventArgs e)
+        {
+            int? currentRow = null;
+            foreach (DataGridViewCell cell in dgRaider.SelectedCells)
+            {
+                if (currentRow == null) { currentRow = cell.RowIndex; }
+                else if (currentRow != cell.RowIndex)
+                {
+                    AddMessage("Löschung abgebrochen --> Es kann nur eine Zeile auf einmal gelöscht werden.", true);
+                    return;
+                }
+            }
+            if (currentRow != null)
+            {
+                DataGridViewRow row = dgRaider.Rows[(int)currentRow];
+
+                MySqlCommand sqlCmd;
+                string cmdString = "";
+                sqlConnection.Open();
+                string messageSuccess = "";
+                try
+                {
+                    cmdString =
+                             "DELETE FROM Raider WHERE " +
+                             "ID = " + row.Cells[dgRaiderID.Name].Value.ToString();
+                    messageSuccess = "Raider erfolgreich gelöscht";
+
+                    Console.WriteLine(cmdString);
+                    sqlCmd = new MySqlCommand(cmdString, sqlConnection);
+                    sqlCmd.ExecuteNonQuery();
+                    sqlConnection.Close();
+                    AddMessage(messageSuccess);
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    if (sqlConnection.State != System.Data.ConnectionState.Closed) sqlConnection.Close();
+                    AddMessage("Raider nicht gelöscht --> SQL Fehler", true);
+                }
+                RefreshRaider();
+            }
+        }
+
+        private void dgRaider_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                frmRaider raider = new frmRaider();
+                DataGridViewRow row = dgRaider.Rows[e.RowIndex];
+                raider.tbID.Text = row.Cells[dgRaiderID.Name].Value.ToString();
+                raider.tbName.Text = row.Cells[dgRaiderName.Name].Value.ToString();
+                raider.tbDKP_T1.Text = row.Cells[dgRaiderDKP_T1.Name].Value.ToString();
+                raider.tbDKP_T2.Text = row.Cells[dgRaiderDKP_T2.Name].Value.ToString();
+                if (raider.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                {
+                    SQLSaveRaider(raider);
+
+                }
             }
         }
     }

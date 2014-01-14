@@ -28,27 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.dgRaider = new System.Windows.Forms.DataGridView();
-            this.dgRaiderID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRaiderName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRaiderDKP_T1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRaiderDKP_T2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnAddRaider = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.dgRaids = new System.Windows.Forms.DataGridView();
-            this.btnAddRaid = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.btnRefreshAll = new System.Windows.Forms.Button();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.statusBar = new System.Windows.Forms.StatusStrip();
             this.statusMessages = new System.Windows.Forms.ToolStripSplitButton();
             this.dgRaidsID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgRaidsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgRaidsShortcut = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgRaidsContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgRaidsCommentary = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cmRaid = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miAddRaid = new System.Windows.Forms.ToolStripMenuItem();
+            this.miDeleteRaid = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmRaider = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miAddRaider = new System.Windows.Forms.ToolStripMenuItem();
+            this.miDeleteRaider = new System.Windows.Forms.ToolStripMenuItem();
+            this.dgRaiderID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRaiderName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRaiderDKP_T1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRaiderDKP_T2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgRaider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgRaids)).BeginInit();
-            this.statusStrip1.SuspendLayout();
+            this.statusBar.SuspendLayout();
+            this.cmRaid.SuspendLayout();
+            this.cmRaider.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgRaider
@@ -61,52 +66,15 @@
             this.dgRaiderName,
             this.dgRaiderDKP_T1,
             this.dgRaiderDKP_T2});
-            this.dgRaider.Location = new System.Drawing.Point(12, 41);
+            this.dgRaider.ContextMenuStrip = this.cmRaider;
+            this.dgRaider.Location = new System.Drawing.Point(12, 12);
             this.dgRaider.Name = "dgRaider";
+            this.dgRaider.ReadOnly = true;
+            this.dgRaider.RowHeadersVisible = false;
             this.dgRaider.ShowEditingIcon = false;
-            this.dgRaider.Size = new System.Drawing.Size(394, 233);
+            this.dgRaider.Size = new System.Drawing.Size(300, 537);
             this.dgRaider.TabIndex = 0;
             this.dgRaider.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgRaider_CellDoubleClick);
-            // 
-            // dgRaiderID
-            // 
-            this.dgRaiderID.HeaderText = "ID";
-            this.dgRaiderID.Name = "dgRaiderID";
-            this.dgRaiderID.Width = 20;
-            // 
-            // dgRaiderName
-            // 
-            this.dgRaiderName.HeaderText = "Raider";
-            this.dgRaiderName.Name = "dgRaiderName";
-            // 
-            // dgRaiderDKP_T1
-            // 
-            this.dgRaiderDKP_T1.HeaderText = "DKP T1";
-            this.dgRaiderDKP_T1.Name = "dgRaiderDKP_T1";
-            // 
-            // dgRaiderDKP_T2
-            // 
-            this.dgRaiderDKP_T2.HeaderText = "DKP T2";
-            this.dgRaiderDKP_T2.Name = "dgRaiderDKP_T2";
-            // 
-            // btnAddRaider
-            // 
-            this.btnAddRaider.Location = new System.Drawing.Point(12, 12);
-            this.btnAddRaider.Name = "btnAddRaider";
-            this.btnAddRaider.Size = new System.Drawing.Size(100, 23);
-            this.btnAddRaider.TabIndex = 2;
-            this.btnAddRaider.Text = "Add Raider";
-            this.btnAddRaider.UseVisualStyleBackColor = true;
-            this.btnAddRaider.Click += new System.EventHandler(this.btnAddRaider_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(118, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Remove Raider";
-            this.button2.UseVisualStyleBackColor = true;
             // 
             // dgRaids
             // 
@@ -119,31 +87,15 @@
             this.dgRaidsShortcut,
             this.dgRaidsContent,
             this.dgRaidsCommentary});
-            this.dgRaids.Location = new System.Drawing.Point(12, 332);
+            this.dgRaids.ContextMenuStrip = this.cmRaid;
+            this.dgRaids.Location = new System.Drawing.Point(12, 555);
             this.dgRaids.Name = "dgRaids";
             this.dgRaids.ReadOnly = true;
-            this.dgRaids.Size = new System.Drawing.Size(504, 233);
+            this.dgRaids.RowHeadersVisible = false;
+            this.dgRaids.ShowEditingIcon = false;
+            this.dgRaids.Size = new System.Drawing.Size(800, 150);
             this.dgRaids.TabIndex = 4;
             this.dgRaids.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgRaids_CellDoubleClick);
-            // 
-            // btnAddRaid
-            // 
-            this.btnAddRaid.Location = new System.Drawing.Point(12, 303);
-            this.btnAddRaid.Name = "btnAddRaid";
-            this.btnAddRaid.Size = new System.Drawing.Size(100, 23);
-            this.btnAddRaid.TabIndex = 5;
-            this.btnAddRaid.Text = "Add Raid";
-            this.btnAddRaid.UseVisualStyleBackColor = true;
-            this.btnAddRaid.Click += new System.EventHandler(this.btnAddRaid_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(118, 303);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(100, 23);
-            this.button4.TabIndex = 6;
-            this.button4.Text = "Remove Raider";
-            this.button4.UseVisualStyleBackColor = true;
             // 
             // btnRefreshAll
             // 
@@ -155,17 +107,17 @@
             this.btnRefreshAll.UseVisualStyleBackColor = true;
             this.btnRefreshAll.Click += new System.EventHandler(this.btnRefreshAll_Click);
             // 
-            // statusStrip1
+            // statusBar
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusMessages});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 693);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.statusStrip1.Size = new System.Drawing.Size(1056, 22);
-            this.statusStrip1.TabIndex = 8;
-            this.statusStrip1.Text = "statusStrip1";
-            this.statusStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.statusStrip1_ItemClicked);
+            this.statusBar.Location = new System.Drawing.Point(0, 708);
+            this.statusBar.Name = "statusBar";
+            this.statusBar.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.statusBar.Size = new System.Drawing.Size(1008, 22);
+            this.statusBar.TabIndex = 8;
+            this.statusBar.Text = "statusBar";
+            this.statusBar.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.statusStrip1_ItemClicked);
             // 
             // statusMessages
             // 
@@ -194,6 +146,7 @@
             this.dgRaidsShortcut.HeaderText = "Shortcut";
             this.dgRaidsShortcut.Name = "dgRaidsShortcut";
             this.dgRaidsShortcut.ReadOnly = true;
+            this.dgRaidsShortcut.Width = 75;
             // 
             // dgRaidsContent
             // 
@@ -201,25 +154,91 @@
             this.dgRaidsContent.Name = "dgRaidsContent";
             this.dgRaidsContent.ReadOnly = true;
             this.dgRaidsContent.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgRaidsContent.Width = 50;
             // 
             // dgRaidsCommentary
             // 
+            this.dgRaidsCommentary.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.dgRaidsCommentary.HeaderText = "Comment";
             this.dgRaidsCommentary.Name = "dgRaidsCommentary";
             this.dgRaidsCommentary.ReadOnly = true;
+            // 
+            // cmRaid
+            // 
+            this.cmRaid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miAddRaid,
+            this.miDeleteRaid});
+            this.cmRaid.Name = "cmRaid";
+            this.cmRaid.Size = new System.Drawing.Size(134, 48);
+            // 
+            // miAddRaid
+            // 
+            this.miAddRaid.Name = "miAddRaid";
+            this.miAddRaid.Size = new System.Drawing.Size(133, 22);
+            this.miAddRaid.Text = "Add Raid";
+            this.miAddRaid.Click += new System.EventHandler(this.miAddRaid_Click);
+            // 
+            // miDeleteRaid
+            // 
+            this.miDeleteRaid.Name = "miDeleteRaid";
+            this.miDeleteRaid.Size = new System.Drawing.Size(133, 22);
+            this.miDeleteRaid.Text = "Delete Raid";
+            this.miDeleteRaid.Click += new System.EventHandler(this.miDeleteRaid_Click);
+            // 
+            // cmRaider
+            // 
+            this.cmRaider.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miAddRaider,
+            this.miDeleteRaider});
+            this.cmRaider.Name = "cmRaid";
+            this.cmRaider.Size = new System.Drawing.Size(144, 48);
+            // 
+            // miAddRaider
+            // 
+            this.miAddRaider.Name = "miAddRaider";
+            this.miAddRaider.Size = new System.Drawing.Size(152, 22);
+            this.miAddRaider.Text = "Add Raider";
+            this.miAddRaider.Click += new System.EventHandler(this.miAddRaider_Click);
+            // 
+            // miDeleteRaider
+            // 
+            this.miDeleteRaider.Name = "miDeleteRaider";
+            this.miDeleteRaider.Size = new System.Drawing.Size(152, 22);
+            this.miDeleteRaider.Text = "Delete Raider";
+            this.miDeleteRaider.Click += new System.EventHandler(this.miDeleteRaider_Click);
+            // 
+            // dgRaiderID
+            // 
+            this.dgRaiderID.HeaderText = "ID";
+            this.dgRaiderID.Name = "dgRaiderID";
+            this.dgRaiderID.Width = 20;
+            // 
+            // dgRaiderName
+            // 
+            this.dgRaiderName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgRaiderName.HeaderText = "Raider";
+            this.dgRaiderName.Name = "dgRaiderName";
+            // 
+            // dgRaiderDKP_T1
+            // 
+            this.dgRaiderDKP_T1.HeaderText = "DKP T1";
+            this.dgRaiderDKP_T1.Name = "dgRaiderDKP_T1";
+            this.dgRaiderDKP_T1.Width = 75;
+            // 
+            // dgRaiderDKP_T2
+            // 
+            this.dgRaiderDKP_T2.HeaderText = "DKP T2";
+            this.dgRaiderDKP_T2.Name = "dgRaiderDKP_T2";
+            this.dgRaiderDKP_T2.Width = 75;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1056, 715);
-            this.Controls.Add(this.statusStrip1);
+            this.ClientSize = new System.Drawing.Size(1008, 730);
+            this.Controls.Add(this.statusBar);
             this.Controls.Add(this.btnRefreshAll);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.btnAddRaid);
             this.Controls.Add(this.dgRaids);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.btnAddRaider);
             this.Controls.Add(this.dgRaider);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -227,8 +246,10 @@
             this.Load += new System.EventHandler(this.frmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgRaider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgRaids)).EndInit();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.statusBar.ResumeLayout(false);
+            this.statusBar.PerformLayout();
+            this.cmRaid.ResumeLayout(false);
+            this.cmRaider.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -237,23 +258,25 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dgRaider;
-        private System.Windows.Forms.Button btnAddRaider;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataGridView dgRaids;
-        private System.Windows.Forms.Button btnAddRaid;
-        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button btnRefreshAll;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaiderID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaiderName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaiderDKP_T1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaiderDKP_T2;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip statusBar;
         private System.Windows.Forms.ToolStripSplitButton statusMessages;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsID;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsName;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsShortcut;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsContent;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsCommentary;
+        private System.Windows.Forms.ContextMenuStrip cmRaid;
+        private System.Windows.Forms.ToolStripMenuItem miAddRaid;
+        private System.Windows.Forms.ToolStripMenuItem miDeleteRaid;
+        private System.Windows.Forms.ContextMenuStrip cmRaider;
+        private System.Windows.Forms.ToolStripMenuItem miAddRaider;
+        private System.Windows.Forms.ToolStripMenuItem miDeleteRaider;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaiderID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaiderName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaiderDKP_T1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaiderDKP_T2;
     }
 }
 

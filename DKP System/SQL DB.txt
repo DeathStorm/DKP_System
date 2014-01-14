@@ -1,0 +1,27 @@
+﻿delimiter $$
+
+CREATE DATABASE `dkp` /*!40100 DEFAULT CHARACTER SET utf8 */$$
+
+delimiter $$
+
+CREATE TABLE `raider` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(50) NOT NULL,
+  `DKP_T1` int(11) NOT NULL DEFAULT '0',
+  `DKP_T2` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `RaiderID_UNIQUE` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='List of all Raiders'$$
+
+delimiter $$
+
+
+CREATE TABLE `raids` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(50) NOT NULL,
+  `Shortcut` varchar(15) NOT NULL,
+  `Content` varchar(15) NOT NULL,
+  `Commentary` text,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='A List of All Raids'$$
+

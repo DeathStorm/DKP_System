@@ -4,6 +4,24 @@ CREATE DATABASE `dkp` /*!40100 DEFAULT CHARACTER SET utf8 */$$
 
 delimiter $$
 
+CREATE TABLE `content` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(45) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `Name_UNIQUE` (`Name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='A List of the Contents for example T1, T2'$$
+
+delimiter $$
+
+CREATE TABLE `dkp_points` (
+  `RaiderID` int(11) NOT NULL,
+  `ContentID` int(11) NOT NULL,
+  `DKPPoints` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`RaiderID`,`ContentID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of all DKP Points by Raider and Content'$$
+
+delimiter $$
+
 CREATE TABLE `raider` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(50) NOT NULL,
@@ -15,13 +33,13 @@ CREATE TABLE `raider` (
 
 delimiter $$
 
-
 CREATE TABLE `raids` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(50) NOT NULL,
   `Shortcut` varchar(15) NOT NULL,
-  `Content` varchar(15) NOT NULL,
+  `Content` int(11) DEFAULT NULL,
   `Commentary` text,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='A List of All Raids'$$
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `Name_UNIQUE` (`Name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='A List of All Raids'$$
 

@@ -2,6 +2,7 @@
 
 CREATE DATABASE `dkp` /*!40100 DEFAULT CHARACTER SET utf8 */$$
 
+
 delimiter $$
 
 CREATE TABLE `content` (
@@ -33,6 +34,20 @@ CREATE TABLE `raider` (
 
 delimiter $$
 
+CREATE TABLE `raidplaner` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `RaidID` int(11) NOT NULL,
+  `RaidDate` datetime NOT NULL,
+  `Invite` datetime DEFAULT NULL,
+  `Start` datetime NOT NULL,
+  `End` datetime DEFAULT NULL,
+  `StatusID` int(11) NOT NULL,
+  `Commentary` text,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='List of all Raids'$$
+
+delimiter $$
+
 CREATE TABLE `raids` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(50) NOT NULL,
@@ -41,5 +56,25 @@ CREATE TABLE `raids` (
   `Commentary` text,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='A List of All Raids'$$
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='A List of All Raids'$$
+
+delimiter $$
+
+CREATE TABLE `raidstatus` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Status` varchar(45) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `Status_UNIQUE` (`Status`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8$$
+
+INSERT INTO `dkp`.`RaidStatus` (`Status`) VALUES ('Open');$$
+INSERT INTO `dkp`.`RaidStatus` (`Status`) VALUES ('Closed');$$
+
+delimiter $$
+
+CREATE TABLE `raidteilnehmer` (
+  `RaidPlanerID` int(11) NOT NULL,
+  `RaiderID` int(11) NOT NULL,
+  PRIMARY KEY (`RaidPlanerID`,`RaiderID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$$
 

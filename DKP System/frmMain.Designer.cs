@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             this.cmRaider = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miAddRaider = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeleteRaider = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,17 +45,18 @@
             this.miDeleteContent = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabRaidplaner = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRaidPlanerDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRaidPlanerRaid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRaidPlanerContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRaidPlanerRaidDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRaidPlanerStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRaidPlanerInvite = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRaidPlanerEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRaidPlanerStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblStandardEnde = new System.Windows.Forms.Label();
+            this.dtStandardEnde = new System.Windows.Forms.DateTimePicker();
+            this.dtStandardStart = new System.Windows.Forms.DateTimePicker();
+            this.dtStandardInvite = new System.Windows.Forms.DateTimePicker();
+            this.lblStandardInvite = new System.Windows.Forms.Label();
+            this.lblStandardStart = new System.Windows.Forms.Label();
+            this.dgRaidPlaner = new System.Windows.Forms.DataGridView();
+            this.cmRaidPlaner = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miRaidPlanerAdd = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRaidplanerDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRaidPlanerCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxShow = new System.Windows.Forms.GroupBox();
             this.rbShowClosed = new System.Windows.Forms.RadioButton();
             this.rbShowOpen = new System.Windows.Forms.RadioButton();
@@ -72,33 +75,31 @@
             this.dgRaiderID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgRaiderName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
-            this.cmRaidPlaner = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.miRaidPlanerAdd = new System.Windows.Forms.ToolStripMenuItem();
-            this.miRaidplanerDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.miRaidPlanerCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.dtStandardInvite = new System.Windows.Forms.DateTimePicker();
-            this.dtStandardStart = new System.Windows.Forms.DateTimePicker();
-            this.dtStandardEnde = new System.Windows.Forms.DateTimePicker();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lblStandardInvite = new System.Windows.Forms.Label();
-            this.lblStandardStart = new System.Windows.Forms.Label();
-            this.lblStandardEnde = new System.Windows.Forms.Label();
             this.btnSaveConfig = new System.Windows.Forms.Button();
             this.btnLoadConfig = new System.Windows.Forms.Button();
+            this.dgRaidPlanerID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRaidPlanerDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRaidPlanerRaid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRaidPlanerContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRaidPlanerStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRaidPlanerInvite = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRaidPlanerEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRaidPlanerStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRaidPlanerComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cmRaider.SuspendLayout();
             this.cmRaid.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.cmContent.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabRaidplaner.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgRaidPlaner)).BeginInit();
+            this.cmRaidPlaner.SuspendLayout();
             this.groupBoxShow.SuspendLayout();
             this.tabBasicSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgContent)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgRaids)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgRaider)).BeginInit();
-            this.cmRaidPlaner.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmRaider
@@ -210,7 +211,7 @@
             // tabRaidplaner
             // 
             this.tabRaidplaner.Controls.Add(this.groupBox1);
-            this.tabRaidplaner.Controls.Add(this.dataGridView1);
+            this.tabRaidplaner.Controls.Add(this.dgRaidPlaner);
             this.tabRaidplaner.Controls.Add(this.groupBoxShow);
             this.tabRaidplaner.Location = new System.Drawing.Point(4, 22);
             this.tabRaidplaner.Name = "tabRaidplaner";
@@ -220,100 +221,133 @@
             this.tabRaidplaner.Text = "Raidplaner";
             this.tabRaidplaner.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // groupBox1
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
+            this.groupBox1.Controls.Add(this.lblStandardEnde);
+            this.groupBox1.Controls.Add(this.dtStandardEnde);
+            this.groupBox1.Controls.Add(this.dtStandardStart);
+            this.groupBox1.Controls.Add(this.dtStandardInvite);
+            this.groupBox1.Controls.Add(this.lblStandardInvite);
+            this.groupBox1.Controls.Add(this.lblStandardStart);
+            this.groupBox1.Location = new System.Drawing.Point(109, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(668, 100);
+            this.groupBox1.TabIndex = 30;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "StandardWerte";
+            // 
+            // lblStandardEnde
+            // 
+            this.lblStandardEnde.AutoSize = true;
+            this.lblStandardEnde.Location = new System.Drawing.Point(6, 71);
+            this.lblStandardEnde.Name = "lblStandardEnde";
+            this.lblStandardEnde.Size = new System.Drawing.Size(32, 13);
+            this.lblStandardEnde.TabIndex = 122;
+            this.lblStandardEnde.Text = "Ende";
+            // 
+            // dtStandardEnde
+            // 
+            this.dtStandardEnde.CustomFormat = "HH:mm";
+            this.dtStandardEnde.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtStandardEnde.Location = new System.Drawing.Point(45, 71);
+            this.dtStandardEnde.Name = "dtStandardEnde";
+            this.dtStandardEnde.ShowUpDown = true;
+            this.dtStandardEnde.Size = new System.Drawing.Size(100, 20);
+            this.dtStandardEnde.TabIndex = 29;
+            // 
+            // dtStandardStart
+            // 
+            this.dtStandardStart.CustomFormat = "HH:mm";
+            this.dtStandardStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtStandardStart.Location = new System.Drawing.Point(45, 45);
+            this.dtStandardStart.Name = "dtStandardStart";
+            this.dtStandardStart.ShowUpDown = true;
+            this.dtStandardStart.Size = new System.Drawing.Size(100, 20);
+            this.dtStandardStart.TabIndex = 28;
+            // 
+            // dtStandardInvite
+            // 
+            this.dtStandardInvite.CustomFormat = "HH:mm";
+            this.dtStandardInvite.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtStandardInvite.Location = new System.Drawing.Point(45, 19);
+            this.dtStandardInvite.Name = "dtStandardInvite";
+            this.dtStandardInvite.ShowUpDown = true;
+            this.dtStandardInvite.Size = new System.Drawing.Size(100, 20);
+            this.dtStandardInvite.TabIndex = 27;
+            this.dtStandardInvite.Value = new System.DateTime(2014, 1, 15, 12, 9, 0, 0);
+            // 
+            // lblStandardInvite
+            // 
+            this.lblStandardInvite.AutoSize = true;
+            this.lblStandardInvite.Location = new System.Drawing.Point(6, 19);
+            this.lblStandardInvite.Name = "lblStandardInvite";
+            this.lblStandardInvite.Size = new System.Drawing.Size(33, 13);
+            this.lblStandardInvite.TabIndex = 121;
+            this.lblStandardInvite.Text = "Invite";
+            // 
+            // lblStandardStart
+            // 
+            this.lblStandardStart.AutoSize = true;
+            this.lblStandardStart.Location = new System.Drawing.Point(6, 45);
+            this.lblStandardStart.Name = "lblStandardStart";
+            this.lblStandardStart.Size = new System.Drawing.Size(29, 13);
+            this.lblStandardStart.TabIndex = 120;
+            this.lblStandardStart.Text = "Start";
+            // 
+            // dgRaidPlaner
+            // 
+            this.dgRaidPlaner.AllowUserToAddRows = false;
+            this.dgRaidPlaner.AllowUserToDeleteRows = false;
+            this.dgRaidPlaner.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgRaidPlaner.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgRaidPlanerID,
             this.dgRaidPlanerDate,
             this.dgRaidPlanerRaid,
             this.dgRaidPlanerContent,
-            this.dgRaidPlanerRaidDate,
             this.dgRaidPlanerStart,
             this.dgRaidPlanerInvite,
             this.dgRaidPlanerEnd,
             this.dgRaidPlanerStatus,
-            this.dataGridViewTextBoxColumn5});
-            this.dataGridView1.ContextMenuStrip = this.cmRaid;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 191);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.ShowEditingIcon = false;
-            this.dataGridView1.Size = new System.Drawing.Size(777, 150);
-            this.dataGridView1.TabIndex = 12;
+            this.dgRaidPlanerComment});
+            this.dgRaidPlaner.ContextMenuStrip = this.cmRaidPlaner;
+            this.dgRaidPlaner.Location = new System.Drawing.Point(6, 191);
+            this.dgRaidPlaner.Name = "dgRaidPlaner";
+            this.dgRaidPlaner.ReadOnly = true;
+            this.dgRaidPlaner.RowHeadersVisible = false;
+            this.dgRaidPlaner.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgRaidPlaner.ShowEditingIcon = false;
+            this.dgRaidPlaner.Size = new System.Drawing.Size(777, 150);
+            this.dgRaidPlaner.TabIndex = 12;
+            this.dgRaidPlaner.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgRaidPlaner_CellDoubleClick);
+            this.dgRaidPlaner.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgRaider_MouseDown);
             // 
-            // dataGridViewTextBoxColumn1
+            // cmRaidPlaner
             // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Width = 20;
+            this.cmRaidPlaner.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miRaidPlanerAdd,
+            this.miRaidplanerDelete,
+            this.miRaidPlanerCopy});
+            this.cmRaidPlaner.Name = "cmRaid";
+            this.cmRaidPlaner.Size = new System.Drawing.Size(134, 70);
             // 
-            // dgRaidPlanerDate
+            // miRaidPlanerAdd
             // 
-            this.dgRaidPlanerDate.HeaderText = "Datum";
-            this.dgRaidPlanerDate.Name = "dgRaidPlanerDate";
-            this.dgRaidPlanerDate.ReadOnly = true;
-            this.dgRaidPlanerDate.Width = 75;
+            this.miRaidPlanerAdd.Name = "miRaidPlanerAdd";
+            this.miRaidPlanerAdd.Size = new System.Drawing.Size(133, 22);
+            this.miRaidPlanerAdd.Text = "Add Raid";
+            this.miRaidPlanerAdd.Click += new System.EventHandler(this.miRaidPlanerAdd_Click);
             // 
-            // dgRaidPlanerRaid
+            // miRaidplanerDelete
             // 
-            this.dgRaidPlanerRaid.HeaderText = "Raid";
-            this.dgRaidPlanerRaid.Name = "dgRaidPlanerRaid";
-            this.dgRaidPlanerRaid.ReadOnly = true;
+            this.miRaidplanerDelete.Name = "miRaidplanerDelete";
+            this.miRaidplanerDelete.Size = new System.Drawing.Size(133, 22);
+            this.miRaidplanerDelete.Text = "Delete Raid";
             // 
-            // dgRaidPlanerContent
+            // miRaidPlanerCopy
             // 
-            this.dgRaidPlanerContent.HeaderText = "Content";
-            this.dgRaidPlanerContent.Name = "dgRaidPlanerContent";
-            this.dgRaidPlanerContent.ReadOnly = true;
-            this.dgRaidPlanerContent.Width = 50;
-            // 
-            // dgRaidPlanerRaidDate
-            // 
-            this.dgRaidPlanerRaidDate.HeaderText = "Datum";
-            this.dgRaidPlanerRaidDate.Name = "dgRaidPlanerRaidDate";
-            this.dgRaidPlanerRaidDate.ReadOnly = true;
-            this.dgRaidPlanerRaidDate.Width = 40;
-            // 
-            // dgRaidPlanerStart
-            // 
-            this.dgRaidPlanerStart.HeaderText = "Start";
-            this.dgRaidPlanerStart.Name = "dgRaidPlanerStart";
-            this.dgRaidPlanerStart.ReadOnly = true;
-            this.dgRaidPlanerStart.Width = 40;
-            // 
-            // dgRaidPlanerInvite
-            // 
-            this.dgRaidPlanerInvite.HeaderText = "Invite";
-            this.dgRaidPlanerInvite.Name = "dgRaidPlanerInvite";
-            this.dgRaidPlanerInvite.ReadOnly = true;
-            this.dgRaidPlanerInvite.Width = 40;
-            // 
-            // dgRaidPlanerEnd
-            // 
-            this.dgRaidPlanerEnd.HeaderText = "Ende";
-            this.dgRaidPlanerEnd.Name = "dgRaidPlanerEnd";
-            this.dgRaidPlanerEnd.ReadOnly = true;
-            this.dgRaidPlanerEnd.Width = 40;
-            // 
-            // dgRaidPlanerStatus
-            // 
-            this.dgRaidPlanerStatus.HeaderText = "Status";
-            this.dgRaidPlanerStatus.Name = "dgRaidPlanerStatus";
-            this.dgRaidPlanerStatus.ReadOnly = true;
-            this.dgRaidPlanerStatus.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgRaidPlanerStatus.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn5.HeaderText = "Comment";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            this.miRaidPlanerCopy.Name = "miRaidPlanerCopy";
+            this.miRaidPlanerCopy.Size = new System.Drawing.Size(133, 22);
+            this.miRaidPlanerCopy.Text = "Copy Raid";
             // 
             // groupBoxShow
             // 
@@ -390,6 +424,8 @@
             this.dgContent.ShowEditingIcon = false;
             this.dgContent.Size = new System.Drawing.Size(158, 145);
             this.dgContent.TabIndex = 12;
+            this.dgContent.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgContent_CellDoubleClick_1);
+            this.dgContent.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgRaider_MouseDown);
             // 
             // dgContentID
             // 
@@ -424,6 +460,8 @@
             this.dgRaids.ShowEditingIcon = false;
             this.dgRaids.Size = new System.Drawing.Size(780, 150);
             this.dgRaids.TabIndex = 11;
+            this.dgRaids.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgRaids_CellDoubleClick_1);
+            this.dgRaids.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgRaider_MouseDown);
             // 
             // dgRaidsID
             // 
@@ -473,9 +511,12 @@
             this.dgRaider.Name = "dgRaider";
             this.dgRaider.ReadOnly = true;
             this.dgRaider.RowHeadersVisible = false;
+            this.dgRaider.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgRaider.ShowEditingIcon = false;
             this.dgRaider.Size = new System.Drawing.Size(300, 500);
             this.dgRaider.TabIndex = 10;
+            this.dgRaider.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgRaider_CellDoubleClick_1);
+            this.dgRaider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgRaider_MouseDown);
             // 
             // dgRaiderID
             // 
@@ -497,106 +538,6 @@
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.TabIndex = 11;
             // 
-            // cmRaidPlaner
-            // 
-            this.cmRaidPlaner.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miRaidPlanerAdd,
-            this.miRaidplanerDelete,
-            this.miRaidPlanerCopy});
-            this.cmRaidPlaner.Name = "cmRaid";
-            this.cmRaidPlaner.Size = new System.Drawing.Size(134, 70);
-            // 
-            // miRaidPlanerAdd
-            // 
-            this.miRaidPlanerAdd.Name = "miRaidPlanerAdd";
-            this.miRaidPlanerAdd.Size = new System.Drawing.Size(133, 22);
-            this.miRaidPlanerAdd.Text = "Add Raid";
-            // 
-            // miRaidplanerDelete
-            // 
-            this.miRaidplanerDelete.Name = "miRaidplanerDelete";
-            this.miRaidplanerDelete.Size = new System.Drawing.Size(133, 22);
-            this.miRaidplanerDelete.Text = "Delete Raid";
-            // 
-            // miRaidPlanerCopy
-            // 
-            this.miRaidPlanerCopy.Name = "miRaidPlanerCopy";
-            this.miRaidPlanerCopy.Size = new System.Drawing.Size(133, 22);
-            this.miRaidPlanerCopy.Text = "Copy Raid";
-            // 
-            // dtStandardInvite
-            // 
-            this.dtStandardInvite.CustomFormat = "HH:mm";
-            this.dtStandardInvite.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtStandardInvite.Location = new System.Drawing.Point(45, 19);
-            this.dtStandardInvite.Name = "dtStandardInvite";
-            this.dtStandardInvite.ShowUpDown = true;
-            this.dtStandardInvite.Size = new System.Drawing.Size(100, 20);
-            this.dtStandardInvite.TabIndex = 27;
-            this.dtStandardInvite.Value = new System.DateTime(2014, 1, 15, 12, 9, 0, 0);
-            // 
-            // dtStandardStart
-            // 
-            this.dtStandardStart.CustomFormat = "HH:mm";
-            this.dtStandardStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtStandardStart.Location = new System.Drawing.Point(45, 45);
-            this.dtStandardStart.Name = "dtStandardStart";
-            this.dtStandardStart.ShowUpDown = true;
-            this.dtStandardStart.Size = new System.Drawing.Size(100, 20);
-            this.dtStandardStart.TabIndex = 28;
-            // 
-            // dtStandardEnde
-            // 
-            this.dtStandardEnde.CustomFormat = "HH:mm";
-            this.dtStandardEnde.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtStandardEnde.Location = new System.Drawing.Point(45, 71);
-            this.dtStandardEnde.Name = "dtStandardEnde";
-            this.dtStandardEnde.ShowUpDown = true;
-            this.dtStandardEnde.Size = new System.Drawing.Size(100, 20);
-            this.dtStandardEnde.TabIndex = 29;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.lblStandardEnde);
-            this.groupBox1.Controls.Add(this.dtStandardEnde);
-            this.groupBox1.Controls.Add(this.dtStandardStart);
-            this.groupBox1.Controls.Add(this.dtStandardInvite);
-            this.groupBox1.Controls.Add(this.lblStandardInvite);
-            this.groupBox1.Controls.Add(this.lblStandardStart);
-            this.groupBox1.Location = new System.Drawing.Point(109, 6);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(668, 100);
-            this.groupBox1.TabIndex = 30;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "StandardWerte";
-            // 
-            // lblStandardInvite
-            // 
-            this.lblStandardInvite.AutoSize = true;
-            this.lblStandardInvite.Location = new System.Drawing.Point(6, 19);
-            this.lblStandardInvite.Name = "lblStandardInvite";
-            this.lblStandardInvite.Size = new System.Drawing.Size(33, 13);
-            this.lblStandardInvite.TabIndex = 121;
-            this.lblStandardInvite.Text = "Invite";
-            // 
-            // lblStandardStart
-            // 
-            this.lblStandardStart.AutoSize = true;
-            this.lblStandardStart.Location = new System.Drawing.Point(6, 45);
-            this.lblStandardStart.Name = "lblStandardStart";
-            this.lblStandardStart.Size = new System.Drawing.Size(29, 13);
-            this.lblStandardStart.TabIndex = 120;
-            this.lblStandardStart.Text = "Start";
-            // 
-            // lblStandardEnde
-            // 
-            this.lblStandardEnde.AutoSize = true;
-            this.lblStandardEnde.Location = new System.Drawing.Point(6, 71);
-            this.lblStandardEnde.Name = "lblStandardEnde";
-            this.lblStandardEnde.Size = new System.Drawing.Size(32, 13);
-            this.lblStandardEnde.TabIndex = 122;
-            this.lblStandardEnde.Text = "Ende";
-            // 
             // btnSaveConfig
             // 
             this.btnSaveConfig.Location = new System.Drawing.Point(821, 208);
@@ -616,6 +557,73 @@
             this.btnLoadConfig.Text = "Load Config";
             this.btnLoadConfig.UseVisualStyleBackColor = true;
             this.btnLoadConfig.Click += new System.EventHandler(this.btnLoadConfig_Click);
+            // 
+            // dgRaidPlanerID
+            // 
+            this.dgRaidPlanerID.HeaderText = "ID";
+            this.dgRaidPlanerID.Name = "dgRaidPlanerID";
+            this.dgRaidPlanerID.ReadOnly = true;
+            this.dgRaidPlanerID.Width = 20;
+            // 
+            // dgRaidPlanerDate
+            // 
+            dataGridViewCellStyle15.Format = "dd.MM.yyyy";
+            this.dgRaidPlanerDate.DefaultCellStyle = dataGridViewCellStyle15;
+            this.dgRaidPlanerDate.HeaderText = "Datum";
+            this.dgRaidPlanerDate.Name = "dgRaidPlanerDate";
+            this.dgRaidPlanerDate.ReadOnly = true;
+            this.dgRaidPlanerDate.Width = 75;
+            // 
+            // dgRaidPlanerRaid
+            // 
+            this.dgRaidPlanerRaid.HeaderText = "Raid";
+            this.dgRaidPlanerRaid.Name = "dgRaidPlanerRaid";
+            this.dgRaidPlanerRaid.ReadOnly = true;
+            // 
+            // dgRaidPlanerContent
+            // 
+            this.dgRaidPlanerContent.HeaderText = "Content";
+            this.dgRaidPlanerContent.Name = "dgRaidPlanerContent";
+            this.dgRaidPlanerContent.ReadOnly = true;
+            this.dgRaidPlanerContent.Width = 50;
+            // 
+            // dgRaidPlanerStart
+            // 
+            this.dgRaidPlanerStart.HeaderText = "Start";
+            this.dgRaidPlanerStart.Name = "dgRaidPlanerStart";
+            this.dgRaidPlanerStart.ReadOnly = true;
+            this.dgRaidPlanerStart.Width = 40;
+            // 
+            // dgRaidPlanerInvite
+            // 
+            dataGridViewCellStyle16.Format = "HH:mm";
+            this.dgRaidPlanerInvite.DefaultCellStyle = dataGridViewCellStyle16;
+            this.dgRaidPlanerInvite.HeaderText = "Invite";
+            this.dgRaidPlanerInvite.Name = "dgRaidPlanerInvite";
+            this.dgRaidPlanerInvite.ReadOnly = true;
+            this.dgRaidPlanerInvite.Width = 40;
+            // 
+            // dgRaidPlanerEnd
+            // 
+            this.dgRaidPlanerEnd.HeaderText = "Ende";
+            this.dgRaidPlanerEnd.Name = "dgRaidPlanerEnd";
+            this.dgRaidPlanerEnd.ReadOnly = true;
+            this.dgRaidPlanerEnd.Width = 40;
+            // 
+            // dgRaidPlanerStatus
+            // 
+            this.dgRaidPlanerStatus.HeaderText = "Status";
+            this.dgRaidPlanerStatus.Name = "dgRaidPlanerStatus";
+            this.dgRaidPlanerStatus.ReadOnly = true;
+            this.dgRaidPlanerStatus.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgRaidPlanerStatus.Width = 50;
+            // 
+            // dgRaidPlanerComment
+            // 
+            this.dgRaidPlanerComment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgRaidPlanerComment.HeaderText = "Comment";
+            this.dgRaidPlanerComment.Name = "dgRaidPlanerComment";
+            this.dgRaidPlanerComment.ReadOnly = true;
             // 
             // frmMain
             // 
@@ -639,16 +647,16 @@
             this.cmContent.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabRaidplaner.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgRaidPlaner)).EndInit();
+            this.cmRaidPlaner.ResumeLayout(false);
             this.groupBoxShow.ResumeLayout(false);
             this.groupBoxShow.PerformLayout();
             this.tabBasicSettings.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgContent)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgRaids)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgRaider)).EndInit();
-            this.cmRaidPlaner.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -687,18 +695,8 @@
         private System.Windows.Forms.RadioButton rbShowOpen;
         private System.Windows.Forms.RadioButton rbShowAll;
         private System.Windows.Forms.MonthCalendar monthCalendar1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgRaidPlaner;
         private System.Windows.Forms.RadioButton rbShowClosed;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerDate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerRaid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerContent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerRaidDate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerStart;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerInvite;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerEnd;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerStatus;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.ContextMenuStrip cmRaidPlaner;
         private System.Windows.Forms.ToolStripMenuItem miRaidPlanerAdd;
         private System.Windows.Forms.ToolStripMenuItem miRaidplanerDelete;
@@ -712,6 +710,15 @@
         private System.Windows.Forms.Label lblStandardStart;
         private System.Windows.Forms.Button btnSaveConfig;
         private System.Windows.Forms.Button btnLoadConfig;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerRaid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerContent;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerStart;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerInvite;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerEnd;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerStatus;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerComment;
     }
 }
 

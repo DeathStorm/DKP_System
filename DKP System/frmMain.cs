@@ -25,6 +25,7 @@ namespace DKP_System
 
         Dictionary<int, string> Content;
         Dictionary<int, string> RaidStatus;
+        Dictionary<int, string> Raids;
 
         string configFilePath = Application.StartupPath + "\\config.xml";
 
@@ -38,8 +39,11 @@ namespace DKP_System
             RefreshContent();
             RefreshRaider();
             RefreshRaids();
-
+            RefreshRaidPlaner();
         }
+
+
+
 
         private void RefreshContent()
         {
@@ -92,7 +96,7 @@ namespace DKP_System
         {
             try
             {
-                MySqlDataReader sqlRead = SQLSelect("Select * from RaidStatus");
+                MySqlDataReader sqlRead = SQLSelect("Select * from RaidStatus", sqlConnection);
                 RaidStatus.Clear();
 
                 if (sqlRead.HasRows)
@@ -197,11 +201,15 @@ namespace DKP_System
                 MySqlDataReader sqlRead = sqlCmd.ExecuteReader();
 
                 dgRaids.Rows.Clear();
+                Raids = new Dictionary<int, string>();
+                Raids.Clear();
 
                 if (sqlRead.HasRows)
                 {
                     while (sqlRead.Read())
                     {
+                        Raids.Add(sqlRead.GetInt32("ID"), sqlRead.GetString("Name"));
+
                         DataGridViewRow row = dgRaids.Rows[dgRaids.Rows.Add()];
                         row.Cells[dgRaidsID.Name].Value = sqlRead.GetString("ID");
                         row.Cells[dgRaidsName.Name].Value = sqlRead.GetString("Name");
@@ -229,12 +237,55 @@ namespace DKP_System
             }
         }
 
+        private void RefreshRaidPlaner()
+        {
+            //return;
+            try
+            {
+                //MySqlCommand sqlCmd = new MySqlCommand("Select * from RaidPlaner ", sqlConnection);
+                //sqlConnection.Open();
+                MySqlDataReader sqlRead = SQLSelect("Select * from RaidPlaner");
+
+                dgRaidPlaner.Rows.Clear();
+
+                if (sqlRead.HasRows)
+                {
+                    while (sqlRead.Read())
+                    {
+                        DataGridViewRow row = dgRaidPlaner.Rows[dgRaidPlaner.Rows.Add()];
+                        row.Cells[dgRaidPlanerID.Name].Value = sqlRead.GetString("ID");
+                        row.Cells[dgRaidPlanerDate.Name].Value = sqlRead.GetDateTime("RaidDate");//.ToString("dd.MM.yyyy");
+                        row.Cells[dgRaidPlanerRaid.Name].Value = Raids[sqlRead.GetInt32("RaidID")];
+                        row.Cells[dgRaidPlanerContent.Name].Value = "TODO";
+                        row.Cells[dgRaidPlanerStart.Name].Value = sqlRead.GetDateTime("Start").ToString("HH:mm");
+                        row.Cells[dgRaidPlanerInvite.Name].Value = sqlRead.GetDateTime("Invite").ToString("HH:mm");
+                        row.Cells[dgRaidPlanerEnd.Name].Value = sqlRead.GetDateTime("End").ToString("HH:mm");
+                        row.Cells[dgRaidPlanerStatus.Name].Value = RaidStatus[sqlRead.GetInt32("StatusID")];
+                        row.Cells[dgRaidPlanerComment.Name].Value = sqlRead.GetString("Commentary");
+                    }
+
+                }
+                sqlRead.Close();
+                sqlConnection.Close();
+
+                AddMessage("Raidplaner erfolgreich aktualisiert");
+            }
+            catch (MySqlException e)
+            {
+                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                if (sqlConnection.State != System.Data.ConnectionState.Closed) sqlConnection.Close();
+                AddMessage("Raidplaneraktualisierung fehlgeschlagen", true);
+            }
+        }
+
         private void frmMain_Load(object sender, EventArgs e)
         {
             Content = new Dictionary<int, string>();
             RaidStatus = new Dictionary<int, string>();
-            ConfigLoad();
             sqlConnection = new MySqlConnection("Data Source=" + sqlDatasource + "; Database=" + sqlDatabase + "; User ID=" + sqlLogin + ";Password=" + sqlPassword);
+            ConfigLoad();
+            RefreshRaidStatus();
+
             AddMessage("Connection aufgebaut");
         }
 
@@ -648,21 +699,21 @@ namespace DKP_System
             ConfigLoad();
         }
 
-        private void XMLAddNode(XmlNode rootNode,String name, String innerText)
+        private void XMLAddNode(XmlNode rootNode, String name, String innerText)
         {
             XmlDocument xmlDoc = rootNode.OwnerDocument;
-           XmlNode xmlChild = xmlDoc.CreateElement(name);
-           xmlChild.InnerText = innerText;
+            XmlNode xmlChild = xmlDoc.CreateElement(name);
+            xmlChild.InnerText = innerText;
             rootNode.AppendChild(xmlChild);
         }
 
         private void ConfigSave()
         {
             XmlDocument xmlDoc = new XmlDocument();
-            
+
             XmlNode xmlRoot = xmlDoc.CreateElement("Standard");
 
-            XMLAddNode(xmlRoot,"InviteZeit",dtStandardInvite.Value.ToString());
+            XMLAddNode(xmlRoot, "InviteZeit", dtStandardInvite.Value.ToString());
             XMLAddNode(xmlRoot, "StartZeit", dtStandardStart.Value.ToString());
             XMLAddNode(xmlRoot, "EndeZeit", dtStandardEnde.Value.ToString());
             //xmlChild = xmlDoc.CreateElement("InviteZeit");
@@ -677,7 +728,7 @@ namespace DKP_System
             //xmlChild.InnerText = dtStandardEnde.Value.ToString();
             //xmlRoot.AppendChild(xmlChild);
 
-            
+
 
             xmlDoc.AppendChild(xmlRoot);
             Console.WriteLine("ConfigFilePath = " + configFilePath);
@@ -713,6 +764,156 @@ namespace DKP_System
                 }
 
             }
+        }
+
+        private void miRaidPlanerAdd_Click(object sender, EventArgs e)
+        {
+            frmRaidPlaner raidPlaner = new frmRaidPlaner(Raids);
+
+
+            raidPlaner.dtStart.Value = dtStandardStart.Value;
+            raidPlaner.dtEnde.Value = dtStandardEnde.Value;
+            raidPlaner.dtInvite.Value = dtStandardInvite.Value;
+
+
+            if (raidPlaner.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            {
+                SQLSaveRaidPlaner(raidPlaner);
+
+            }
+        }
+
+        private void SQLSaveRaidPlaner(frmRaidPlaner raidPlaner)
+        {
+            if (raidPlaner.cbRaid.Text == "") { AddMessage("Raid nicht gespeichert --> Kein Raid ausgewählt", true); }
+            else if (raidPlaner.dtDatum.Value.ToString() == "") { AddMessage("Raid nicht gespeichert --> Kein Datum", true); }
+            else if (raidPlaner.dtStart.Value.ToString() == "") { AddMessage("Raid nicht gespeichert --> Keine Startzeit", true); }
+            else if (!Raids.ContainsValue(raidPlaner.cbRaid.Text)) { AddMessage("Raid nicht gespeichert --> Kein valider Raid", true); }
+            else
+            {
+                MySqlCommand sqlCmd;
+                string cmdString = "";
+                sqlConnection.Open();
+                string messageSuccess = "";
+
+                try
+                {
+                    if (raidPlaner.tbID.Text == "")
+                    {
+                        cmdString =
+                            "INSERT INTO RaidPlaner VALUES(0, " +
+                            "" + GetKeyOfValue(Raids, raidPlaner.cbRaid.Text) + ", " +
+                            "'" + raidPlaner.dtDatum.Value.ToString("yyyy-MM-dd 00:00:00") + "', " +
+                            "'" + raidPlaner.dtInvite.Value.ToString("2013-01-01 HH:mm:00") + "', " +
+                            "'" + raidPlaner.dtStart.Value.ToString("2013-01-01 HH:mm:00") + "', " +
+                            "'" + raidPlaner.dtEnde.Value.ToString("2013-01-01 HH:mm:00") + "', " +
+                            "1, " +
+                            "'" + raidPlaner.tbCommentary.Text + "');";
+                        messageSuccess = "Raidplan erfolgreich erstellt";
+                    }
+                    else
+                    {
+                        cmdString =
+                            "UPDATE RaidPlaner SET " +
+                            "RaidID = " + GetKeyOfValue(Raids, raidPlaner.cbRaid.Text) + ", " +
+                            "RaidDate = '" + raidPlaner.dtDatum.Value.ToString("dd.MM.yyy") + "', " +
+                            "Invite = '" + raidPlaner.dtDatum.Value.ToString("HH:mm") + "', " +
+                            "Start = '" + raidPlaner.dtDatum.Value.ToString("HH:mm") + "', " +
+                            "End = '" + raidPlaner.dtDatum.Value.ToString("HH:mm") + "', " +
+                            "RaidID = " + raidPlaner.tbStatus.Text + ", " +
+                            "Commentary = '" + raidPlaner.tbCommentary.Text + "' " +
+                            "WHERE ID = " + raidPlaner.tbID.Text + ";";
+                        messageSuccess = "Raidplan erfolgreich upgedatet";
+                    }
+                    Console.WriteLine(cmdString);
+                    sqlCmd = new MySqlCommand(cmdString, sqlConnection);
+                    sqlCmd.ExecuteNonQuery();
+                    sqlConnection.Close();
+                    AddMessage(messageSuccess);
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    if (sqlConnection.State != System.Data.ConnectionState.Closed) sqlConnection.Close();
+                    AddMessage("Raidplan nicht gespeichert --> SQL Fehler", true);
+                }
+                RefreshRaids();
+            }
+        }
+
+        private void dgRaider_CellDoubleClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                frmRaider raider = new frmRaider();
+                DataGridViewRow row = dgRaider.Rows[e.RowIndex];
+                raider.tbID.Text = row.Cells[dgRaiderID.Name].Value.ToString();
+                raider.tbName.Text = row.Cells[dgRaiderName.Name].Value.ToString();
+                //raider.tbDKP_T1.Text = row.Cells[dgRaiderDKP_T1.Name].Value.ToString();
+                //raider.tbDKP_T2.Text = row.Cells[dgRaiderDKP_T2.Name].Value.ToString();
+                if (raider.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                {
+                    SQLSaveRaider(raider);
+
+                }
+            }
+        }
+
+        private void dgContent_CellDoubleClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                frmContent content = new frmContent();
+                DataGridViewRow row = dgContent.Rows[e.RowIndex];
+                content.tbID.Text = row.Cells[dgContentID.Name].Value.ToString();
+                content.tbName.Text = row.Cells[dgContentName.Name].Value.ToString();
+                //raider.tbDKP_T1.Text = row.Cells[dgRaiderDKP_T1.Name].Value.ToString();
+                //raider.tbDKP_T2.Text = row.Cells[dgRaiderDKP_T2.Name].Value.ToString();
+                if (content.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                {
+                    SQLSaveContent(content);
+
+                }
+            }
+        }
+
+        private void dgRaids_CellDoubleClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                frmRaid raid = new frmRaid(Content);
+                DataGridViewRow row = dgRaids.Rows[e.RowIndex];
+                raid.tbID.Text = row.Cells[dgRaidsID.Name].Value.ToString();
+                raid.tbName.Text = row.Cells[dgRaidsName.Name].Value.ToString();
+                raid.tbShortcut.Text = row.Cells[dgRaidsShortcut.Name].Value.ToString();
+                raid.cbContent.Text = row.Cells[dgRaidsContent.Name].Value.ToString();
+                raid.tbCommentary.Text = row.Cells[dgRaidsCommentary.Name].Value.ToString();
+                if (raid.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                {
+                    SQLSaveRaid(raid);
+
+                }
+            }
+        }
+
+        private void dgRaidPlaner_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dgRaider_MouseDown(object sender, MouseEventArgs e)
+        {
+
+            DataGridView dgv = (DataGridView)sender;
+            
+            if (e.Button != MouseButtons.Right) return;
+            dgv.ClearSelection();
+            DataGridView.HitTestInfo hti = dgv.HitTest(e.X, e.Y);
+            if (hti.Type == DataGridViewHitTestType.Cell)
+            {
+                dgv.Rows[dgv[hti.ColumnIndex, hti.RowIndex].RowIndex].Selected = true;                
+            }
+
         }
     }
 }

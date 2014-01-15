@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 using MySql.Data.MySqlClient;
 
@@ -23,6 +24,9 @@ namespace DKP_System
         MySqlConnection sqlConnection;
 
         Dictionary<int, string> Content;
+        Dictionary<int, string> RaidStatus;
+
+        string configFilePath = Application.StartupPath + "\\config.xml";
 
         public frmMain()
         {
@@ -73,6 +77,45 @@ namespace DKP_System
 
         }
 
+        private MySqlDataReader SQLSelect(String sqlStatement) { return SQLSelect(sqlStatement, sqlConnection); }
+
+        private MySqlDataReader SQLSelect(String sqlStatement, MySqlConnection connnection)
+        {
+            connnection.Open();
+            MySqlCommand sqlCmd = new MySqlCommand(sqlStatement, connnection);
+            MySqlDataReader sqlRead = sqlCmd.ExecuteReader();
+            return sqlRead;
+
+        }
+
+        private void RefreshRaidStatus()
+        {
+            try
+            {
+                MySqlDataReader sqlRead = SQLSelect("Select * from RaidStatus");
+                RaidStatus.Clear();
+
+                if (sqlRead.HasRows)
+                {
+                    while (sqlRead.Read())
+                    {
+                        RaidStatus.Add(sqlRead.GetInt32("ID"), sqlRead.GetString("Status"));
+                    }
+
+                }
+                sqlRead.Close();
+                sqlConnection.Close();
+                AddMessage("RaidStatus erfolgreich aktualisiert");
+            }
+            catch (MySqlException e)
+            {
+                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                if (sqlConnection.State != System.Data.ConnectionState.Closed) sqlConnection.Close();
+                AddMessage("RaidStatusaktualisierung fehlgeschlagen", true);
+            }
+
+        }
+
         private void RefreshRaider()
         {
             try
@@ -113,7 +156,7 @@ namespace DKP_System
                         row.Cells[dgRaiderID.Name].Value = sqlRead.GetString("ID");
                         row.Cells[dgRaiderName.Name].Value = sqlRead.GetString("Name");
 
-                        sqlSubCommand = new MySqlCommand("SELECT * FROM DKP_Points WHERE RaiderID = " + sqlRead.GetString("ID"),sqlSubConnection);
+                        sqlSubCommand = new MySqlCommand("SELECT * FROM DKP_Points WHERE RaiderID = " + sqlRead.GetString("ID"), sqlSubConnection);
                         Console.WriteLine(sqlSubCommand.CommandText);
                         sqlSubReader = sqlSubCommand.ExecuteReader();
                         if (sqlSubReader.HasRows)
@@ -167,8 +210,8 @@ namespace DKP_System
                         { row.Cells[dgRaidsContent.Name].Value = Content[sqlRead.GetInt32("Content")]; }//sqlRead.GetString("Content"); }
                         else
                         { row.Cells[dgRaidsContent.Name].Value = sqlRead.GetString("Content"); }
-                        
-                        
+
+
                         row.Cells[dgRaidsCommentary.Name].Value = sqlRead.GetString("Commentary");
                     }
 
@@ -189,6 +232,8 @@ namespace DKP_System
         private void frmMain_Load(object sender, EventArgs e)
         {
             Content = new Dictionary<int, string>();
+            RaidStatus = new Dictionary<int, string>();
+            ConfigLoad();
             sqlConnection = new MySqlConnection("Data Source=" + sqlDatasource + "; Database=" + sqlDatabase + "; User ID=" + sqlLogin + ";Password=" + sqlPassword);
             AddMessage("Connection aufgebaut");
         }
@@ -278,7 +323,7 @@ namespace DKP_System
                 string cmdString = "";
                 sqlConnection.Open();
                 string messageSuccess = "";
-                
+
                 try
                 {
                     if (content.tbID.Text == "")
@@ -292,8 +337,8 @@ namespace DKP_System
                     {
                         cmdString =
                             "UPDATE Content SET " +
-                            "Name = '" + content.tbName.Text + "' "+
-                            "WHERE ID = "+content.tbID.Text+";";
+                            "Name = '" + content.tbName.Text + "' " +
+                            "WHERE ID = " + content.tbID.Text + ";";
                         messageSuccess = "Content erfolgreich upgedatet";
                     }
                     Console.WriteLine(cmdString);
@@ -312,9 +357,9 @@ namespace DKP_System
             }
         }
 
-        private int? GetKeyOfValue(Dictionary<int,String> dic,String value)
+        private int? GetKeyOfValue(Dictionary<int, String> dic, String value)
         {
-            foreach (KeyValuePair<int,string> pair in dic)
+            foreach (KeyValuePair<int, string> pair in dic)
             {
                 if (pair.Value == value) return pair.Key;
             }
@@ -326,7 +371,7 @@ namespace DKP_System
             if (raid.tbName.Text == "") { AddMessage("Raid nicht gespeichert --> Kein Name", true); }
             else if (raid.tbShortcut.Text == "") { AddMessage("Raid nicht gespeichert --> Kein Shortcut", true); }
             else if (raid.cbContent.Text == "") { AddMessage("Raid nicht gespeichert --> Kein Content", true); }
-            else if (!Content.ContainsValue(raid.cbContent.Text)) { AddMessage("Raid nicht gespeichert --> Kein valider Content",true); }
+            else if (!Content.ContainsValue(raid.cbContent.Text)) { AddMessage("Raid nicht gespeichert --> Kein valider Content", true); }
             else
             {
                 MySqlCommand sqlCmd;
@@ -342,7 +387,7 @@ namespace DKP_System
                             "INSERT INTO Raids VALUES(0, " +
                             "'" + raid.tbName.Text + "', " +
                             "'" + raid.tbShortcut.Text + "', " +
-                            "'" + GetKeyOfValue(Content,raid.cbContent.Text)+ "', " +
+                            "'" + GetKeyOfValue(Content, raid.cbContent.Text) + "', " +
                             "'" + raid.tbCommentary.Text + "');";
                         messageSuccess = "Raid erfolgreich erstellt";
                     }
@@ -589,6 +634,84 @@ namespace DKP_System
                     SQLSaveContent(content);
 
                 }
+            }
+        }
+
+        private void btnSaveConfig_Click(object sender, EventArgs e)
+        {
+            ConfigSave();
+
+        }
+
+        private void btnLoadConfig_Click(object sender, EventArgs e)
+        {
+            ConfigLoad();
+        }
+
+        private void XMLAddNode(XmlNode rootNode,String name, String innerText)
+        {
+            XmlDocument xmlDoc = rootNode.OwnerDocument;
+           XmlNode xmlChild = xmlDoc.CreateElement(name);
+           xmlChild.InnerText = innerText;
+            rootNode.AppendChild(xmlChild);
+        }
+
+        private void ConfigSave()
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            
+            XmlNode xmlRoot = xmlDoc.CreateElement("Standard");
+
+            XMLAddNode(xmlRoot,"InviteZeit",dtStandardInvite.Value.ToString());
+            XMLAddNode(xmlRoot, "StartZeit", dtStandardStart.Value.ToString());
+            XMLAddNode(xmlRoot, "EndeZeit", dtStandardEnde.Value.ToString());
+            //xmlChild = xmlDoc.CreateElement("InviteZeit");
+            //xmlChild.InnerText = dtStandardInvite.Value.ToString();
+            //xmlRoot.AppendChild(xmlChild);
+
+            //xmlChild = xmlDoc.CreateElement("StartZeit");
+            //xmlChild.InnerText = dtStandardStart.Value.ToString();
+            //xmlRoot.AppendChild(xmlChild);
+
+            //xmlChild = xmlDoc.CreateElement("EndeZeit");
+            //xmlChild.InnerText = dtStandardEnde.Value.ToString();
+            //xmlRoot.AppendChild(xmlChild);
+
+            
+
+            xmlDoc.AppendChild(xmlRoot);
+            Console.WriteLine("ConfigFilePath = " + configFilePath);
+            xmlDoc.Save(configFilePath);
+
+        }
+
+        private void ConfigLoad()
+        {
+            if (System.IO.File.Exists(configFilePath))
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(configFilePath);
+                foreach (XmlNode xmlRoot in xmlDoc.ChildNodes)
+                {
+                    foreach (XmlNode xmlChild in xmlRoot.ChildNodes)
+                    {
+                        switch (xmlRoot.Name + "." + xmlChild.Name)
+                        {
+                            //15.01.2014 12:27:26 Format = dd.MM.yyyy hh:mm:ss
+                            case "Standard.InviteZeit":
+                                dtStandardInvite.Value = DateTime.ParseExact(xmlChild.InnerText, "dd.MM.yyyy HH:mm:ss", null);
+                                break;
+                            case "Standard.StartZeit":
+                                dtStandardStart.Value = DateTime.ParseExact(xmlChild.InnerText, "dd.MM.yyyy HH:mm:ss", null);
+                                break;
+                            case "Standard.EndeZeit":
+                                dtStandardEnde.Value = DateTime.ParseExact(xmlChild.InnerText, "dd.MM.yyyy HH:mm:ss", null);
+                                break;
+
+                        }
+                    }
+                }
+
             }
         }
     }

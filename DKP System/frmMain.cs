@@ -93,6 +93,7 @@ namespace DKP_System
             return currentRow;
         }
 
+
         #region Add Something
         private void miAddRaid_Click(object sender, EventArgs e)
         {

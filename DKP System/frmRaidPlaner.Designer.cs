@@ -44,6 +44,7 @@
             this.dtInvite = new System.Windows.Forms.DateTimePicker();
             this.lblInvite = new System.Windows.Forms.Label();
             this.tbStatus = new System.Windows.Forms.TextBox();
+            this.tbStatusID = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // tbCommentary
@@ -185,17 +186,26 @@
             // 
             // tbStatus
             // 
-            this.tbStatus.Location = new System.Drawing.Point(217, 10);
+            this.tbStatus.Location = new System.Drawing.Point(248, 10);
             this.tbStatus.Name = "tbStatus";
             this.tbStatus.ReadOnly = true;
-            this.tbStatus.Size = new System.Drawing.Size(125, 20);
+            this.tbStatus.Size = new System.Drawing.Size(94, 20);
             this.tbStatus.TabIndex = 121;
+            // 
+            // tbStatusID
+            // 
+            this.tbStatusID.Location = new System.Drawing.Point(217, 10);
+            this.tbStatusID.Name = "tbStatusID";
+            this.tbStatusID.ReadOnly = true;
+            this.tbStatusID.Size = new System.Drawing.Size(25, 20);
+            this.tbStatusID.TabIndex = 122;
             // 
             // frmRaidPlaner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(356, 256);
+            this.Controls.Add(this.tbStatusID);
             this.Controls.Add(this.tbStatus);
             this.Controls.Add(this.dtInvite);
             this.Controls.Add(this.lblInvite);
@@ -238,5 +248,6 @@
         public System.Windows.Forms.DateTimePicker dtEnde;
         public System.Windows.Forms.DateTimePicker dtStart;
         public System.Windows.Forms.DateTimePicker dtInvite;
+        public System.Windows.Forms.TextBox tbStatusID;
     }
 }

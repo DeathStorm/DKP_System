@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MySql.Data, Version=6.7.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="MySql.Data.Entity, Version=6.6.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
@@ -81,6 +82,7 @@
     <Compile Include="frmRaider.Designer.cs">
       <DependentUpon>frmRaider.cs</DependentUpon>
     </Compile>
+    <Compile Include="SQL.cs" />
     <EmbeddedResource Include="Content.resx">
       <DependentUpon>Content.cs</DependentUpon>
     </EmbeddedResource>

@@ -71,6 +71,16 @@
             this.rbShowOpen = new System.Windows.Forms.RadioButton();
             this.rbShowAll = new System.Windows.Forms.RadioButton();
             this.tabBasicSettings = new System.Windows.Forms.TabPage();
+            this.dgBossList = new System.Windows.Forms.DataGridView();
+            this.dgBossListID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgBossListBoss = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgBossListRaid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgBossListDKPTeilnehmer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgBossListDKPErsatz = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgBossListVorgaenger = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cmBossList = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miAddBoss = new System.Windows.Forms.ToolStripMenuItem();
+            this.miDeleteBoss = new System.Windows.Forms.ToolStripMenuItem();
             this.dgContent = new System.Windows.Forms.DataGridView();
             this.dgContentID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgContentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -86,16 +96,6 @@
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.btnSaveConfig = new System.Windows.Forms.Button();
             this.btnLoadConfig = new System.Windows.Forms.Button();
-            this.dgBossList = new System.Windows.Forms.DataGridView();
-            this.dgBossListID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgBossListBoss = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgBossListRaid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgBossListDKPTeilnehmer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgBossListDKPErsatz = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgBossListVorgaenger = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cmBossList = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.miAddBoss = new System.Windows.Forms.ToolStripMenuItem();
-            this.miDeleteBoss = new System.Windows.Forms.ToolStripMenuItem();
             this.cmRaider.SuspendLayout();
             this.cmRaid.SuspendLayout();
             this.statusBar.SuspendLayout();
@@ -107,11 +107,11 @@
             this.cmRaidPlaner.SuspendLayout();
             this.groupBoxShow.SuspendLayout();
             this.tabBasicSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgBossList)).BeginInit();
+            this.cmBossList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgContent)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgRaids)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgRaider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgBossList)).BeginInit();
-            this.cmBossList.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmRaider
@@ -330,8 +330,8 @@
             this.dgRaidPlaner.ShowEditingIcon = false;
             this.dgRaidPlaner.Size = new System.Drawing.Size(777, 150);
             this.dgRaidPlaner.TabIndex = 12;
-            this.dgRaidPlaner.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgRaidPlaner_CellDoubleClick);
-            this.dgRaidPlaner.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgRaider_MouseDown);
+            this.dgRaidPlaner.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGrid_CellDoubleClick);
+            this.dgRaidPlaner.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DataGrid_MouseDown);
             // 
             // dgRaidPlanerID
             // 
@@ -488,156 +488,6 @@
             this.tabBasicSettings.Text = "Basic Settings";
             this.tabBasicSettings.UseVisualStyleBackColor = true;
             // 
-            // dgContent
-            // 
-            this.dgContent.AllowUserToAddRows = false;
-            this.dgContent.AllowUserToDeleteRows = false;
-            this.dgContent.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgContent.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgContentID,
-            this.dgContentName});
-            this.dgContent.ContextMenuStrip = this.cmContent;
-            this.dgContent.Location = new System.Drawing.Point(312, 361);
-            this.dgContent.Name = "dgContent";
-            this.dgContent.ReadOnly = true;
-            this.dgContent.RowHeadersVisible = false;
-            this.dgContent.ShowEditingIcon = false;
-            this.dgContent.Size = new System.Drawing.Size(158, 145);
-            this.dgContent.TabIndex = 12;
-            this.dgContent.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgContent_CellDoubleClick_1);
-            this.dgContent.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgRaider_MouseDown);
-            // 
-            // dgContentID
-            // 
-            this.dgContentID.HeaderText = "ID";
-            this.dgContentID.Name = "dgContentID";
-            this.dgContentID.ReadOnly = true;
-            this.dgContentID.Width = 20;
-            // 
-            // dgContentName
-            // 
-            this.dgContentName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgContentName.HeaderText = "Content";
-            this.dgContentName.Name = "dgContentName";
-            this.dgContentName.ReadOnly = true;
-            // 
-            // dgRaids
-            // 
-            this.dgRaids.AllowUserToAddRows = false;
-            this.dgRaids.AllowUserToDeleteRows = false;
-            this.dgRaids.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgRaids.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgRaidsID,
-            this.dgRaidsName,
-            this.dgRaidsShortcut,
-            this.dgRaidsContent,
-            this.dgRaidsCommentary});
-            this.dgRaids.ContextMenuStrip = this.cmRaid;
-            this.dgRaids.Location = new System.Drawing.Point(3, 511);
-            this.dgRaids.Name = "dgRaids";
-            this.dgRaids.ReadOnly = true;
-            this.dgRaids.RowHeadersVisible = false;
-            this.dgRaids.ShowEditingIcon = false;
-            this.dgRaids.Size = new System.Drawing.Size(780, 150);
-            this.dgRaids.TabIndex = 11;
-            this.dgRaids.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgRaids_CellDoubleClick_1);
-            this.dgRaids.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgRaider_MouseDown);
-            // 
-            // dgRaidsID
-            // 
-            this.dgRaidsID.HeaderText = "ID";
-            this.dgRaidsID.Name = "dgRaidsID";
-            this.dgRaidsID.ReadOnly = true;
-            this.dgRaidsID.Width = 20;
-            // 
-            // dgRaidsName
-            // 
-            this.dgRaidsName.HeaderText = "Raid";
-            this.dgRaidsName.Name = "dgRaidsName";
-            this.dgRaidsName.ReadOnly = true;
-            // 
-            // dgRaidsShortcut
-            // 
-            this.dgRaidsShortcut.HeaderText = "Shortcut";
-            this.dgRaidsShortcut.Name = "dgRaidsShortcut";
-            this.dgRaidsShortcut.ReadOnly = true;
-            this.dgRaidsShortcut.Width = 75;
-            // 
-            // dgRaidsContent
-            // 
-            this.dgRaidsContent.HeaderText = "Content";
-            this.dgRaidsContent.Name = "dgRaidsContent";
-            this.dgRaidsContent.ReadOnly = true;
-            this.dgRaidsContent.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgRaidsContent.Width = 50;
-            // 
-            // dgRaidsCommentary
-            // 
-            this.dgRaidsCommentary.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgRaidsCommentary.HeaderText = "Comment";
-            this.dgRaidsCommentary.Name = "dgRaidsCommentary";
-            this.dgRaidsCommentary.ReadOnly = true;
-            // 
-            // dgRaider
-            // 
-            this.dgRaider.AllowUserToAddRows = false;
-            this.dgRaider.AllowUserToDeleteRows = false;
-            this.dgRaider.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgRaider.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgRaiderID,
-            this.dgRaiderName});
-            this.dgRaider.ContextMenuStrip = this.cmRaider;
-            this.dgRaider.Location = new System.Drawing.Point(6, 6);
-            this.dgRaider.Name = "dgRaider";
-            this.dgRaider.ReadOnly = true;
-            this.dgRaider.RowHeadersVisible = false;
-            this.dgRaider.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgRaider.ShowEditingIcon = false;
-            this.dgRaider.Size = new System.Drawing.Size(300, 500);
-            this.dgRaider.TabIndex = 10;
-            this.dgRaider.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgRaider_CellDoubleClick_1);
-            this.dgRaider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgRaider_MouseDown);
-            // 
-            // dgRaiderID
-            // 
-            this.dgRaiderID.HeaderText = "ID";
-            this.dgRaiderID.Name = "dgRaiderID";
-            this.dgRaiderID.ReadOnly = true;
-            this.dgRaiderID.Width = 20;
-            // 
-            // dgRaiderName
-            // 
-            this.dgRaiderName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgRaiderName.HeaderText = "Raider";
-            this.dgRaiderName.Name = "dgRaiderName";
-            this.dgRaiderName.ReadOnly = true;
-            // 
-            // monthCalendar1
-            // 
-            this.monthCalendar1.Location = new System.Drawing.Point(821, 34);
-            this.monthCalendar1.Name = "monthCalendar1";
-            this.monthCalendar1.TabIndex = 11;
-            // 
-            // btnSaveConfig
-            // 
-            this.btnSaveConfig.Location = new System.Drawing.Point(821, 208);
-            this.btnSaveConfig.Name = "btnSaveConfig";
-            this.btnSaveConfig.Size = new System.Drawing.Size(175, 23);
-            this.btnSaveConfig.TabIndex = 123;
-            this.btnSaveConfig.Text = "Save Config";
-            this.btnSaveConfig.UseVisualStyleBackColor = true;
-            this.btnSaveConfig.Click += new System.EventHandler(this.btnSaveConfig_Click);
-            // 
-            // btnLoadConfig
-            // 
-            this.btnLoadConfig.Location = new System.Drawing.Point(821, 237);
-            this.btnLoadConfig.Name = "btnLoadConfig";
-            this.btnLoadConfig.Size = new System.Drawing.Size(175, 23);
-            this.btnLoadConfig.TabIndex = 124;
-            this.btnLoadConfig.Text = "Load Config";
-            this.btnLoadConfig.UseVisualStyleBackColor = true;
-            this.btnLoadConfig.Click += new System.EventHandler(this.btnLoadConfig_Click);
-            // 
             // dgBossList
             // 
             this.dgBossList.AllowUserToAddRows = false;
@@ -718,6 +568,156 @@
             this.miDeleteBoss.Size = new System.Drawing.Size(134, 22);
             this.miDeleteBoss.Text = "Delete Boss";
             // 
+            // dgContent
+            // 
+            this.dgContent.AllowUserToAddRows = false;
+            this.dgContent.AllowUserToDeleteRows = false;
+            this.dgContent.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgContent.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgContentID,
+            this.dgContentName});
+            this.dgContent.ContextMenuStrip = this.cmContent;
+            this.dgContent.Location = new System.Drawing.Point(312, 361);
+            this.dgContent.Name = "dgContent";
+            this.dgContent.ReadOnly = true;
+            this.dgContent.RowHeadersVisible = false;
+            this.dgContent.ShowEditingIcon = false;
+            this.dgContent.Size = new System.Drawing.Size(158, 145);
+            this.dgContent.TabIndex = 12;
+            this.dgContent.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGrid_CellDoubleClick);
+            this.dgContent.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DataGrid_MouseDown);
+            // 
+            // dgContentID
+            // 
+            this.dgContentID.HeaderText = "ID";
+            this.dgContentID.Name = "dgContentID";
+            this.dgContentID.ReadOnly = true;
+            this.dgContentID.Width = 20;
+            // 
+            // dgContentName
+            // 
+            this.dgContentName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgContentName.HeaderText = "Content";
+            this.dgContentName.Name = "dgContentName";
+            this.dgContentName.ReadOnly = true;
+            // 
+            // dgRaids
+            // 
+            this.dgRaids.AllowUserToAddRows = false;
+            this.dgRaids.AllowUserToDeleteRows = false;
+            this.dgRaids.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgRaids.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgRaidsID,
+            this.dgRaidsName,
+            this.dgRaidsShortcut,
+            this.dgRaidsContent,
+            this.dgRaidsCommentary});
+            this.dgRaids.ContextMenuStrip = this.cmRaid;
+            this.dgRaids.Location = new System.Drawing.Point(3, 511);
+            this.dgRaids.Name = "dgRaids";
+            this.dgRaids.ReadOnly = true;
+            this.dgRaids.RowHeadersVisible = false;
+            this.dgRaids.ShowEditingIcon = false;
+            this.dgRaids.Size = new System.Drawing.Size(780, 150);
+            this.dgRaids.TabIndex = 11;
+            this.dgRaids.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGrid_CellDoubleClick);
+            this.dgRaids.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DataGrid_MouseDown);
+            // 
+            // dgRaidsID
+            // 
+            this.dgRaidsID.HeaderText = "ID";
+            this.dgRaidsID.Name = "dgRaidsID";
+            this.dgRaidsID.ReadOnly = true;
+            this.dgRaidsID.Width = 20;
+            // 
+            // dgRaidsName
+            // 
+            this.dgRaidsName.HeaderText = "Raid";
+            this.dgRaidsName.Name = "dgRaidsName";
+            this.dgRaidsName.ReadOnly = true;
+            // 
+            // dgRaidsShortcut
+            // 
+            this.dgRaidsShortcut.HeaderText = "Shortcut";
+            this.dgRaidsShortcut.Name = "dgRaidsShortcut";
+            this.dgRaidsShortcut.ReadOnly = true;
+            this.dgRaidsShortcut.Width = 75;
+            // 
+            // dgRaidsContent
+            // 
+            this.dgRaidsContent.HeaderText = "Content";
+            this.dgRaidsContent.Name = "dgRaidsContent";
+            this.dgRaidsContent.ReadOnly = true;
+            this.dgRaidsContent.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgRaidsContent.Width = 50;
+            // 
+            // dgRaidsCommentary
+            // 
+            this.dgRaidsCommentary.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgRaidsCommentary.HeaderText = "Comment";
+            this.dgRaidsCommentary.Name = "dgRaidsCommentary";
+            this.dgRaidsCommentary.ReadOnly = true;
+            // 
+            // dgRaider
+            // 
+            this.dgRaider.AllowUserToAddRows = false;
+            this.dgRaider.AllowUserToDeleteRows = false;
+            this.dgRaider.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgRaider.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgRaiderID,
+            this.dgRaiderName});
+            this.dgRaider.ContextMenuStrip = this.cmRaider;
+            this.dgRaider.Location = new System.Drawing.Point(6, 6);
+            this.dgRaider.Name = "dgRaider";
+            this.dgRaider.ReadOnly = true;
+            this.dgRaider.RowHeadersVisible = false;
+            this.dgRaider.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgRaider.ShowEditingIcon = false;
+            this.dgRaider.Size = new System.Drawing.Size(300, 500);
+            this.dgRaider.TabIndex = 10;
+            this.dgRaider.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGrid_CellDoubleClick);
+            this.dgRaider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DataGrid_MouseDown);
+            // 
+            // dgRaiderID
+            // 
+            this.dgRaiderID.HeaderText = "ID";
+            this.dgRaiderID.Name = "dgRaiderID";
+            this.dgRaiderID.ReadOnly = true;
+            this.dgRaiderID.Width = 20;
+            // 
+            // dgRaiderName
+            // 
+            this.dgRaiderName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgRaiderName.HeaderText = "Raider";
+            this.dgRaiderName.Name = "dgRaiderName";
+            this.dgRaiderName.ReadOnly = true;
+            // 
+            // monthCalendar1
+            // 
+            this.monthCalendar1.Location = new System.Drawing.Point(821, 34);
+            this.monthCalendar1.Name = "monthCalendar1";
+            this.monthCalendar1.TabIndex = 11;
+            // 
+            // btnSaveConfig
+            // 
+            this.btnSaveConfig.Location = new System.Drawing.Point(821, 208);
+            this.btnSaveConfig.Name = "btnSaveConfig";
+            this.btnSaveConfig.Size = new System.Drawing.Size(175, 23);
+            this.btnSaveConfig.TabIndex = 123;
+            this.btnSaveConfig.Text = "Save Config";
+            this.btnSaveConfig.UseVisualStyleBackColor = true;
+            this.btnSaveConfig.Click += new System.EventHandler(this.btnSaveConfig_Click);
+            // 
+            // btnLoadConfig
+            // 
+            this.btnLoadConfig.Location = new System.Drawing.Point(821, 237);
+            this.btnLoadConfig.Name = "btnLoadConfig";
+            this.btnLoadConfig.Size = new System.Drawing.Size(175, 23);
+            this.btnLoadConfig.TabIndex = 124;
+            this.btnLoadConfig.Text = "Load Config";
+            this.btnLoadConfig.UseVisualStyleBackColor = true;
+            this.btnLoadConfig.Click += new System.EventHandler(this.btnLoadConfig_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -747,11 +747,11 @@
             this.groupBoxShow.ResumeLayout(false);
             this.groupBoxShow.PerformLayout();
             this.tabBasicSettings.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgBossList)).EndInit();
+            this.cmBossList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgContent)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgRaids)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgRaider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgBossList)).EndInit();
-            this.cmBossList.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -774,23 +774,19 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabRaidplaner;
         private System.Windows.Forms.TabPage tabBasicSettings;
-        private System.Windows.Forms.DataGridView dgContent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgContentID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgContentName;
-        private System.Windows.Forms.DataGridView dgRaids;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsShortcut;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsContent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsCommentary;
-        private System.Windows.Forms.DataGridView dgRaider;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaiderID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaiderName;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgContentID;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgContentName;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsID;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsName;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsShortcut;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsContent;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidsCommentary;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaiderID;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaiderName;
         private System.Windows.Forms.GroupBox groupBoxShow;
         private System.Windows.Forms.RadioButton rbShowOpen;
         private System.Windows.Forms.RadioButton rbShowAll;
         private System.Windows.Forms.MonthCalendar monthCalendar1;
-        private System.Windows.Forms.DataGridView dgRaidPlaner;
         private System.Windows.Forms.RadioButton rbShowClosed;
         private System.Windows.Forms.ContextMenuStrip cmRaidPlaner;
         private System.Windows.Forms.ToolStripMenuItem miRaidPlanerAdd;
@@ -805,25 +801,29 @@
         private System.Windows.Forms.Label lblStandardStart;
         private System.Windows.Forms.Button btnSaveConfig;
         private System.Windows.Forms.Button btnLoadConfig;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerDate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerRaid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerContent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerStart;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerInvite;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerEnd;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerStatus;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerComment;
-        private System.Windows.Forms.DataGridView dgBossList;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgBossListID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgBossListBoss;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgBossListRaid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgBossListDKPTeilnehmer;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgBossListDKPErsatz;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgBossListVorgaenger;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerID;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerDate;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerRaid;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerContent;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerStart;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerInvite;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerEnd;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerStatus;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgRaidPlanerComment;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgBossListID;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgBossListBoss;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgBossListRaid;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgBossListDKPTeilnehmer;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgBossListDKPErsatz;
+        internal System.Windows.Forms.DataGridViewTextBoxColumn dgBossListVorgaenger;
         private System.Windows.Forms.ContextMenuStrip cmBossList;
         private System.Windows.Forms.ToolStripMenuItem miAddBoss;
         private System.Windows.Forms.ToolStripMenuItem miDeleteBoss;
+        internal System.Windows.Forms.DataGridView dgContent;
+        internal System.Windows.Forms.DataGridView dgRaids;
+        internal System.Windows.Forms.DataGridView dgRaider;
+        internal System.Windows.Forms.DataGridView dgRaidPlaner;
+        internal System.Windows.Forms.DataGridView dgBossList;
     }
 }
 

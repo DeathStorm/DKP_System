@@ -26,6 +26,7 @@ namespace DKP_System
         Dictionary<int, string> Content;
         Dictionary<int, string> RaidStatus;
         Dictionary<int, string> Raids;
+        Dictionary<int, string> BossList;
 
         string configFilePath = Application.StartupPath + "\\config.xml";
 
@@ -40,10 +41,70 @@ namespace DKP_System
             RefreshRaider();
             RefreshRaids();
             RefreshRaidPlaner();
+            RefreshBossList();
         }
 
 
+        private void RefreshBossList()
+        {
+            try
+            {
+                MySqlCommand sqlCmd = new MySqlCommand("Select * from BossList", sqlConnection);
+                sqlConnection.Open();
+                MySqlDataReader sqlRead = sqlCmd.ExecuteReader();
 
+                BossList.Clear();
+                dgBossList.Rows.Clear();
+
+                if (sqlRead.HasRows)
+                {
+                    while (sqlRead.Read())
+                    {
+                        BossList.Add(sqlRead.GetInt32("ID"), sqlRead.GetString("BossName"));
+
+                        DataGridViewRow row = dgBossList.Rows[dgBossList.Rows.Add()];
+                        row.Cells[dgBossListID.Name].Value = sqlRead.GetString("ID");
+                        row.Cells[dgBossListBoss.Name].Value = sqlRead.GetString("BossName");
+                        row.Cells[dgBossListRaid.Name].Value = Raids[sqlRead.GetInt32("RaidID")];
+                        row.Cells[dgBossListDKPTeilnehmer.Name].Value = sqlRead.GetString("DKP_Teilnehmer");
+                        row.Cells[dgBossListDKPErsatz.Name].Value = sqlRead.GetString("DKP_Ersatz");
+                        row.Cells[dgBossListVorgaenger.Name].Value = GetSQLStringNullSuppressed(sqlRead, "BossIDVorgaenger");
+                    }
+
+                }
+                sqlRead.Close();
+                sqlConnection.Close();
+
+                foreach (DataGridViewRow row in dgBossList.Rows)
+                {
+                    String rowValue = row.Cells[dgBossListVorgaenger.Name].Value.ToString() ;
+
+                    if (rowValue != "")
+                    {
+                        row.Cells[dgBossListVorgaenger.Name].Value = BossList[int.Parse(row.Cells[dgBossListVorgaenger.Name].Value.ToString())];
+                    }
+                }
+
+                AddMessage("BossList erfolgreich aktualisiert");
+            }
+            catch (MySqlException e)
+            {
+                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                if (sqlConnection.State != System.Data.ConnectionState.Closed) sqlConnection.Close();
+                AddMessage("BossListaktualisierung fehlgeschlagen", true);
+            }
+
+        }
+
+        private string GetSQLStringNullSuppressed(MySqlDataReader sqlRead, string columnName)
+        {
+            Object obj = sqlRead.GetValue(sqlRead.GetOrdinal(columnName));
+            if (obj == null || obj.ToString() == "" )
+            {return "";}
+            else
+            { return sqlRead.GetString(columnName); }
+            
+        }
 
         private void RefreshContent()
         {
@@ -282,6 +343,7 @@ namespace DKP_System
         {
             Content = new Dictionary<int, string>();
             RaidStatus = new Dictionary<int, string>();
+            BossList = new Dictionary<int, string>();
             sqlConnection = new MySqlConnection("Data Source=" + sqlDatasource + "; Database=" + sqlDatabase + "; User ID=" + sqlLogin + ";Password=" + sqlPassword);
             ConfigLoad();
             RefreshRaidStatus();
@@ -321,8 +383,8 @@ namespace DKP_System
                 string cmdString = "";
                 sqlConnection.Open();
                 string messageSuccess = "";
-                if (raider.tbDKP_T1.Text == "") raider.tbDKP_T1.Text = "0";
-                if (raider.tbDKP_T2.Text == "") raider.tbDKP_T2.Text = "0";
+                //if (raider.tbDKP_T1.Text == "") raider.tbDKP_T1.Text = "0";
+                //if (raider.tbDKP_T2.Text == "") raider.tbDKP_T2.Text = "0";
 
                 try
                 {
@@ -330,18 +392,18 @@ namespace DKP_System
                     {
                         cmdString =
                             "INSERT INTO Raider VALUES(0, " +
-                            "'" + raider.tbName.Text + "', " +
-                            raider.tbDKP_T1.Text + ", " +
-                            raider.tbDKP_T2.Text + ");";
+                            "'" + raider.tbName.Text + "');";//, " +
+                            //raider.tbDKP_T1.Text + ", " +
+                            //raider.tbDKP_T2.Text + ");";
                         messageSuccess = "Raider erfolgreich erstellt";
                     }
                     else
                     {
                         cmdString =
                             "UPDATE Raider SET " +
-                            "Name = '" + raider.tbName.Text + "', " +
-                            "DKP_T1 = " + raider.tbDKP_T1.Text + ", " +
-                            "DKP_T2 = " + raider.tbDKP_T2.Text + " " +
+                            "Name = '" + raider.tbName.Text + "' " +
+                            //"DKP_T1 = " + raider.tbDKP_T1.Text + ", " +
+                            //"DKP_T2 = " + raider.tbDKP_T2.Text + " " +
                             "WHERE id = " + raider.tbID.Text + ";";
                         messageSuccess = "Raider erfolgreich upgedatet";
                     }
@@ -711,11 +773,18 @@ namespace DKP_System
         {
             XmlDocument xmlDoc = new XmlDocument();
 
-            XmlNode xmlRoot = xmlDoc.CreateElement("Standard");
+            XmlNode xmlDocNode = xmlDoc.CreateElement("DKP_System");
 
+            XmlNode xmlRoot;
+            
+            xmlRoot = xmlDoc.CreateElement("Standard");
             XMLAddNode(xmlRoot, "InviteZeit", dtStandardInvite.Value.ToString());
             XMLAddNode(xmlRoot, "StartZeit", dtStandardStart.Value.ToString());
             XMLAddNode(xmlRoot, "EndeZeit", dtStandardEnde.Value.ToString());
+            xmlDocNode.AppendChild(xmlRoot);
+
+            
+
             //xmlChild = xmlDoc.CreateElement("InviteZeit");
             //xmlChild.InnerText = dtStandardInvite.Value.ToString();
             //xmlRoot.AppendChild(xmlChild);
@@ -729,8 +798,7 @@ namespace DKP_System
             //xmlRoot.AppendChild(xmlChild);
 
 
-
-            xmlDoc.AppendChild(xmlRoot);
+            xmlDoc.AppendChild(xmlDocNode);
             Console.WriteLine("ConfigFilePath = " + configFilePath);
             xmlDoc.Save(configFilePath);
 
@@ -742,7 +810,9 @@ namespace DKP_System
             {
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(configFilePath);
-                foreach (XmlNode xmlRoot in xmlDoc.ChildNodes)
+                XmlNode xmlDocNode = xmlDoc.GetElementsByTagName("DKP_System")[0];
+
+                foreach (XmlNode xmlRoot in xmlDocNode.ChildNodes)
                 {
                     foreach (XmlNode xmlChild in xmlRoot.ChildNodes)
                     {

@@ -65,7 +65,7 @@ CREATE TABLE `raidstatus` (
   `Status` varchar(45) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `Status_UNIQUE` (`Status`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8$$
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8$$
 
 INSERT INTO `dkp`.`RaidStatus` (`Status`) VALUES ('Open');$$
 INSERT INTO `dkp`.`RaidStatus` (`Status`) VALUES ('Closed');$$
@@ -77,4 +77,15 @@ CREATE TABLE `raidteilnehmer` (
   `RaiderID` int(11) NOT NULL,
   PRIMARY KEY (`RaidPlanerID`,`RaiderID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8$$
+
+delimiter $$
+CREATE TABLE `bosslist` (
+  `ID` int(11) NOT NULL,
+  `BossName` varchar(50) NOT NULL,
+  `RaidID` int(11) NOT NULL,
+  `DKP_Teilnehmer` int(11) NOT NULL DEFAULT '0',
+  `DKP_Ersatz` int(11) NOT NULL DEFAULT '0',
+  `BossIDVorgaenger` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of All Bosses';$$
 

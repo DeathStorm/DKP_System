@@ -48,6 +48,7 @@ namespace DKP_System
                         {
                             case LISTNAMES.BossList:
                                 main.BossList.Add(sqlRead.GetInt32("ID"), sqlRead.GetString("BossName"));
+                                main.BossListToRaidID.Add(sqlRead.GetInt32("ID"),sqlRead.GetInt32("RaidID"));
 
                                 row = main.dgBossList.Rows[main.dgBossList.Rows.Add()];
                                 row.Cells[main.dgBossListID.Name].Value = sqlRead.GetString("ID");
@@ -136,6 +137,7 @@ namespace DKP_System
             {
                 case LISTNAMES.BossList:
                     main.BossList.Clear();
+                    main.BossListToRaidID.Clear();
                     main.dgBossList.Rows.Clear();
                     break;
                 case LISTNAMES.Content:

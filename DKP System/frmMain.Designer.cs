@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.cmRaider = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miAddRaider = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeleteRaider = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,6 +71,11 @@
             this.rbShowOpen = new System.Windows.Forms.RadioButton();
             this.rbShowAll = new System.Windows.Forms.RadioButton();
             this.tabBasicSettings = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.nudStandardDKPErsatz = new System.Windows.Forms.NumericUpDown();
+            this.nudStandardDKPTeilnehmer = new System.Windows.Forms.NumericUpDown();
+            this.lblStandardErsatz = new System.Windows.Forms.Label();
+            this.lblStandardDKPTeilnehmer = new System.Windows.Forms.Label();
             this.dgBossList = new System.Windows.Forms.DataGridView();
             this.dgBossListID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgBossListBoss = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -107,6 +112,9 @@
             this.cmRaidPlaner.SuspendLayout();
             this.groupBoxShow.SuspendLayout();
             this.tabBasicSettings.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStandardDKPErsatz)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStandardDKPTeilnehmer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgBossList)).BeginInit();
             this.cmBossList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgContent)).BeginInit();
@@ -342,8 +350,8 @@
             // 
             // dgRaidPlanerDate
             // 
-            dataGridViewCellStyle3.Format = "dd.MM.yyyy";
-            this.dgRaidPlanerDate.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Format = "dd.MM.yyyy";
+            this.dgRaidPlanerDate.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgRaidPlanerDate.HeaderText = "Datum";
             this.dgRaidPlanerDate.Name = "dgRaidPlanerDate";
             this.dgRaidPlanerDate.ReadOnly = true;
@@ -371,8 +379,8 @@
             // 
             // dgRaidPlanerInvite
             // 
-            dataGridViewCellStyle4.Format = "HH:mm";
-            this.dgRaidPlanerInvite.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Format = "HH:mm";
+            this.dgRaidPlanerInvite.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgRaidPlanerInvite.HeaderText = "Invite";
             this.dgRaidPlanerInvite.Name = "dgRaidPlanerInvite";
             this.dgRaidPlanerInvite.ReadOnly = true;
@@ -476,6 +484,7 @@
             // 
             // tabBasicSettings
             // 
+            this.tabBasicSettings.Controls.Add(this.groupBox2);
             this.tabBasicSettings.Controls.Add(this.dgBossList);
             this.tabBasicSettings.Controls.Add(this.dgContent);
             this.tabBasicSettings.Controls.Add(this.dgRaids);
@@ -487,6 +496,51 @@
             this.tabBasicSettings.TabIndex = 1;
             this.tabBasicSettings.Text = "Basic Settings";
             this.tabBasicSettings.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.nudStandardDKPErsatz);
+            this.groupBox2.Controls.Add(this.nudStandardDKPTeilnehmer);
+            this.groupBox2.Controls.Add(this.lblStandardErsatz);
+            this.groupBox2.Controls.Add(this.lblStandardDKPTeilnehmer);
+            this.groupBox2.Location = new System.Drawing.Point(312, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(471, 100);
+            this.groupBox2.TabIndex = 31;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "StandardWerte";
+            // 
+            // nudStandardDKPErsatz
+            // 
+            this.nudStandardDKPErsatz.Location = new System.Drawing.Point(96, 46);
+            this.nudStandardDKPErsatz.Name = "nudStandardDKPErsatz";
+            this.nudStandardDKPErsatz.Size = new System.Drawing.Size(100, 20);
+            this.nudStandardDKPErsatz.TabIndex = 127;
+            // 
+            // nudStandardDKPTeilnehmer
+            // 
+            this.nudStandardDKPTeilnehmer.Location = new System.Drawing.Point(96, 19);
+            this.nudStandardDKPTeilnehmer.Name = "nudStandardDKPTeilnehmer";
+            this.nudStandardDKPTeilnehmer.Size = new System.Drawing.Size(100, 20);
+            this.nudStandardDKPTeilnehmer.TabIndex = 126;
+            // 
+            // lblStandardErsatz
+            // 
+            this.lblStandardErsatz.AutoSize = true;
+            this.lblStandardErsatz.Location = new System.Drawing.Point(6, 48);
+            this.lblStandardErsatz.Name = "lblStandardErsatz";
+            this.lblStandardErsatz.Size = new System.Drawing.Size(61, 13);
+            this.lblStandardErsatz.TabIndex = 124;
+            this.lblStandardErsatz.Text = "DKP Ersatz";
+            // 
+            // lblStandardDKPTeilnehmer
+            // 
+            this.lblStandardDKPTeilnehmer.AutoSize = true;
+            this.lblStandardDKPTeilnehmer.Location = new System.Drawing.Point(6, 22);
+            this.lblStandardDKPTeilnehmer.Name = "lblStandardDKPTeilnehmer";
+            this.lblStandardDKPTeilnehmer.Size = new System.Drawing.Size(84, 13);
+            this.lblStandardDKPTeilnehmer.TabIndex = 121;
+            this.lblStandardDKPTeilnehmer.Text = "DKP Teilnehmer";
             // 
             // dgBossList
             // 
@@ -501,7 +555,7 @@
             this.dgBossListDKPErsatz,
             this.dgBossListVorgaenger});
             this.dgBossList.ContextMenuStrip = this.cmBossList;
-            this.dgBossList.Location = new System.Drawing.Point(312, 6);
+            this.dgBossList.Location = new System.Drawing.Point(312, 184);
             this.dgBossList.Name = "dgBossList";
             this.dgBossList.ReadOnly = true;
             this.dgBossList.RowHeadersVisible = false;
@@ -561,6 +615,7 @@
             this.miAddBoss.Name = "miAddBoss";
             this.miAddBoss.Size = new System.Drawing.Size(134, 22);
             this.miAddBoss.Text = "Add Boss";
+            this.miAddBoss.Click += new System.EventHandler(this.miBossListAdd_Click);
             // 
             // miDeleteBoss
             // 
@@ -747,6 +802,10 @@
             this.groupBoxShow.ResumeLayout(false);
             this.groupBoxShow.PerformLayout();
             this.tabBasicSettings.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStandardDKPErsatz)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStandardDKPTeilnehmer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgBossList)).EndInit();
             this.cmBossList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgContent)).EndInit();
@@ -824,6 +883,11 @@
         internal System.Windows.Forms.DataGridView dgRaider;
         internal System.Windows.Forms.DataGridView dgRaidPlaner;
         internal System.Windows.Forms.DataGridView dgBossList;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label lblStandardErsatz;
+        private System.Windows.Forms.Label lblStandardDKPTeilnehmer;
+        private System.Windows.Forms.NumericUpDown nudStandardDKPTeilnehmer;
+        private System.Windows.Forms.NumericUpDown nudStandardDKPErsatz;
     }
 }
 

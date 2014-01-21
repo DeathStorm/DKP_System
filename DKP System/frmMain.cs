@@ -20,6 +20,7 @@ namespace DKP_System
         internal Dictionary<int, string> RaidStatus;
         internal Dictionary<int, string> Raids;
         internal Dictionary<int, string> BossList;
+        internal Dictionary<int, int> BossListToRaidID;
 
         string configFilePath = Application.StartupPath + "\\config.xml";
 
@@ -46,6 +47,7 @@ namespace DKP_System
             Content = new Dictionary<int, string>();
             RaidStatus = new Dictionary<int, string>();
             BossList = new Dictionary<int, string>();
+            BossListToRaidID = new Dictionary<int, int>();
             Raids = new Dictionary<int, string>();
 
             ConfigLoad();
@@ -124,9 +126,10 @@ namespace DKP_System
 
         private void miBossListAdd_Click(object sender, EventArgs e)
         {
-            //frmBossList bossList = new frmBossList();
-            
-            //if (bossList.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) { sql.Save(SQL.LISTNAMES.BossList, bossList); }
+            frmBossList bossList = new frmBossList(this);
+
+            if (bossList.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) { ;}
+            //{ sql.Save(SQL.LISTNAMES.BossList, bossList); }
         }
 
         private void miRaidPlanerAdd_Click(object sender, EventArgs e)

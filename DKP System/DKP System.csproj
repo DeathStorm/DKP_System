@@ -56,6 +56,12 @@
     <Compile Include="Content.Designer.cs">
       <DependentUpon>Content.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmBossList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBossList.Designer.cs">
+      <DependentUpon>frmBossList.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +91,9 @@
     <Compile Include="SQL.cs" />
     <EmbeddedResource Include="Content.resx">
       <DependentUpon>Content.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBossList.resx">
+      <DependentUpon>frmBossList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>

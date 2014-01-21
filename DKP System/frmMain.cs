@@ -86,7 +86,7 @@ namespace DKP_System
         private int? GetCurrentRow(DataGridView dgView)
         {
             int? currentRow = null;
-            foreach (DataGridViewCell cell in dgRaids.SelectedCells)
+            foreach (DataGridViewCell cell in dgView.SelectedCells)
             {
                 if (currentRow == null) { currentRow = cell.RowIndex; }
                 else if (currentRow != cell.RowIndex) { return null; }
@@ -128,8 +128,7 @@ namespace DKP_System
         {
             frmBossList bossList = new frmBossList(this);
 
-            if (bossList.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) { ;}
-            //{ sql.Save(SQL.LISTNAMES.BossList, bossList); }
+            if (bossList.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) { sql.Save(SQL.LISTNAMES.BossList, bossList); }
         }
 
         private void miRaidPlanerAdd_Click(object sender, EventArgs e)
@@ -310,7 +309,16 @@ namespace DKP_System
                 }
                 else if (dgv.Name == dgBossList.Name)
                 {
-                    frmRaider raider = new frmRaider();
+                    frmBossList bossList = new frmBossList(this);
+                    DataGridViewRow row = dgBossList.Rows[e.RowIndex];
+                    bossList.tbID.Text = row.Cells[dgBossListID.Name].Value.ToString();
+                    bossList.tbName.Text = row.Cells[dgBossListBoss.Name].Value.ToString();
+                    bossList.cbRaid.Text = row.Cells[dgBossListRaid.Name].Value.ToString();
+                    bossList.nudDKPTeilnehmer.Value = int.Parse(row.Cells[dgBossListDKPTeilnehmer.Name].Value.ToString());
+                    bossList.nudDKPErsatz.Value = int.Parse(row.Cells[dgBossListDKPErsatz.Name].Value.ToString());
+                    bossList.cbRaid.Text = row.Cells[dgBossListRaid.Name].Value.ToString();
+                    if (bossList.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) { sql.Save(SQL.LISTNAMES.BossList, bossList); }
+                    
                 }
                 else if (dgv.Name == dgRaidPlaner.Name)
                 {

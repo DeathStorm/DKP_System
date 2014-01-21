@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.cbRaid = new System.Windows.Forms.ComboBox();
-            this.tbCommentary = new System.Windows.Forms.TextBox();
-            this.lblComment = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.lblRaid = new System.Windows.Forms.Label();
@@ -61,28 +59,10 @@
             this.cbRaid.TabIndex = 107;
             this.cbRaid.SelectedIndexChanged += new System.EventHandler(this.cbRaid_SelectedIndexChanged);
             // 
-            // tbCommentary
-            // 
-            this.tbCommentary.Location = new System.Drawing.Point(62, 170);
-            this.tbCommentary.Multiline = true;
-            this.tbCommentary.Name = "tbCommentary";
-            this.tbCommentary.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbCommentary.Size = new System.Drawing.Size(259, 80);
-            this.tbCommentary.TabIndex = 108;
-            // 
-            // lblComment
-            // 
-            this.lblComment.AutoSize = true;
-            this.lblComment.Location = new System.Drawing.Point(11, 173);
-            this.lblComment.Name = "lblComment";
-            this.lblComment.Size = new System.Drawing.Size(51, 13);
-            this.lblComment.TabIndex = 112;
-            this.lblComment.Text = "Comment";
-            // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(201, 260);
+            this.btnCancel.Location = new System.Drawing.Point(202, 170);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(120, 23);
             this.btnCancel.TabIndex = 110;
@@ -92,7 +72,7 @@
             // btnSave
             // 
             this.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnSave.Location = new System.Drawing.Point(61, 260);
+            this.btnSave.Location = new System.Drawing.Point(62, 170);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(120, 23);
             this.btnSave.TabIndex = 109;
@@ -199,15 +179,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(334, 292);
+            this.ClientSize = new System.Drawing.Size(334, 200);
             this.Controls.Add(this.nudDKPErsatz);
             this.Controls.Add(this.nudDKPTeilnehmer);
             this.Controls.Add(this.cbVorgaenger);
             this.Controls.Add(this.lblVorgaenger);
             this.Controls.Add(this.lblDKPErsatz);
             this.Controls.Add(this.cbRaid);
-            this.Controls.Add(this.tbCommentary);
-            this.Controls.Add(this.lblComment);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.lblRaid);
@@ -228,9 +206,6 @@
 
         #endregion
 
-        public System.Windows.Forms.ComboBox cbRaid;
-        public System.Windows.Forms.TextBox tbCommentary;
-        private System.Windows.Forms.Label lblComment;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label lblRaid;
@@ -240,9 +215,10 @@
         private System.Windows.Forms.Label lblID;
         public System.Windows.Forms.TextBox tbID;
         private System.Windows.Forms.Label lblDKPErsatz;
-        public System.Windows.Forms.ComboBox cbVorgaenger;
         private System.Windows.Forms.Label lblVorgaenger;
-        private System.Windows.Forms.NumericUpDown nudDKPTeilnehmer;
-        private System.Windows.Forms.NumericUpDown nudDKPErsatz;
+        internal System.Windows.Forms.ComboBox cbRaid;
+        internal System.Windows.Forms.ComboBox cbVorgaenger;
+        internal System.Windows.Forms.NumericUpDown nudDKPTeilnehmer;
+        internal System.Windows.Forms.NumericUpDown nudDKPErsatz;
     }
 }

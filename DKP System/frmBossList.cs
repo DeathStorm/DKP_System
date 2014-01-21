@@ -24,6 +24,8 @@ namespace DKP_System
             foreach (string raid in main.Raids.Values) { this.cbRaid.Items.Add(raid); }
             RefreshBossItems();
 
+            nudDKPTeilnehmer.Value = main.nudStandardDKPTeilnehmer.Value;
+            nudDKPErsatz.Value = main.nudStandardDKPErsatz.Value;
         }
 
         private void btnSave_Click(object sender, EventArgs e)

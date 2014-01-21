@@ -563,6 +563,8 @@
             this.dgBossList.ShowEditingIcon = false;
             this.dgBossList.Size = new System.Drawing.Size(471, 171);
             this.dgBossList.TabIndex = 13;
+            this.dgBossList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGrid_CellDoubleClick);
+            this.dgBossList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DataGrid_MouseDown);
             // 
             // dgBossListID
             // 
@@ -622,6 +624,7 @@
             this.miDeleteBoss.Name = "miDeleteBoss";
             this.miDeleteBoss.Size = new System.Drawing.Size(134, 22);
             this.miDeleteBoss.Text = "Delete Boss";
+            this.miDeleteBoss.Click += new System.EventHandler(this.miDeleteBossList_Click);
             // 
             // dgContent
             // 
@@ -886,8 +889,8 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label lblStandardErsatz;
         private System.Windows.Forms.Label lblStandardDKPTeilnehmer;
-        private System.Windows.Forms.NumericUpDown nudStandardDKPTeilnehmer;
-        private System.Windows.Forms.NumericUpDown nudStandardDKPErsatz;
+        internal System.Windows.Forms.NumericUpDown nudStandardDKPTeilnehmer;
+        internal System.Windows.Forms.NumericUpDown nudStandardDKPErsatz;
     }
 }
 

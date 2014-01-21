@@ -223,6 +223,9 @@ namespace DKP_System
                         case LISTNAMES.RaidPlaner:
                             sqlCMDString = SaveGetSQLCMD_RaidPlaner((frmRaidPlaner)form);
                             break;
+                        case LISTNAMES.BossList:
+                            sqlCMDString = SaveGetSQLCMD_BossList((frmBossList)form);
+                            break;
                     }
 
                     Console.WriteLine("SQL String \n" + sqlCMDString);
@@ -241,6 +244,8 @@ namespace DKP_System
                     main.AddMessage("SQL Eintrag nicht gespeichert (" + listName.ToString() + ")--> SQL Fehler", true);
                 }
             }
+            else
+            { main.AddMessage("SQL Eintrag nicht gespeichert (" + listName.ToString() + ")--> Ungültige oder fehlende Werte", true); }
         }
 
         private Boolean SaveIsFormValidate(LISTNAMES listName, Form form)
@@ -269,6 +274,11 @@ namespace DKP_System
                     if (raidPlaner.dtStart.Value.ToString() == "") return false;
                     if (!main.Raids.ContainsValue(raidPlaner.cbRaid.Text)) return false;
                     break;
+                case LISTNAMES.BossList:
+                    frmBossList bossList = (frmBossList)form;
+                    if (bossList.tbName.Text == "") return false;
+                    if (bossList.cbRaid.Text == "") return false;
+                    break;
             }
             return true;
         }
@@ -285,6 +295,33 @@ namespace DKP_System
                 return "UPDATE Raider SET " +
                     "Name = '" + raider.tbName.Text + "' " +
                     "WHERE id = " + raider.tbID.Text + ";";
+            }
+        }
+
+        private String SaveGetSQLCMD_BossList(frmBossList bossList)
+        {
+            string vorgaenger = "null";
+            if (bossList.cbVorgaenger.Text != "")
+            { vorgaenger = main.GetKeyOfValue(main.BossList, bossList.cbVorgaenger.Text).ToString(); }
+            
+            if (bossList.tbID.Text == "")
+            {
+                return "INSERT INTO BossList VALUES(0, " +
+                    "'" + bossList.tbName.Text + "', " +
+                    "" + main.GetKeyOfValue(main.Raids, bossList.cbRaid.Text).ToString() + ", " +
+                    "" + bossList.nudDKPTeilnehmer.Value.ToString() + ", " +
+                    "" + bossList.nudDKPErsatz.Value.ToString() + ", " +
+                    "" + vorgaenger + ");";
+            }
+            else
+            {
+                return "UPDATE BossList SET " +
+                    "BossName = '" + bossList.tbName.Text + "', " +
+                    "RaidID = " + main.GetKeyOfValue(main.Raids, bossList.cbRaid.Text).ToString() + ", " +
+                    "DKP_Teilnehmer = " + bossList.nudDKPTeilnehmer.Value.ToString() +", " +
+                    "DKP_Ersatz = " + bossList.nudDKPErsatz.Value.ToString() + ", " +
+                    "BossIDVorgaenger = " + vorgaenger + " " +
+                    "WHERE id = " + bossList.tbID.Text + ";";
             }
         }
 
@@ -357,9 +394,9 @@ namespace DKP_System
             {
                 sqlConnection.Open();
 
-                String sqlCMDString = "Delete * from "+tableName+" where "+idColumn+" = "+id+";";
+                String sqlCMDString = "Delete from "+tableName+" where "+idColumn+" = "+id+";";
 
-                //Console.WriteLine("SQL String \n" + sqlCMDString);
+                Console.WriteLine("SQL String \n" + sqlCMDString);
                 MySqlCommand sqlCMD = new MySqlCommand(sqlCMDString, sqlConnection);
                 sqlCMD.ExecuteNonQuery();
                 sqlConnection.Close();
